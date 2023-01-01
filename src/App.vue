@@ -63,7 +63,7 @@ body {
   }
 }
 .button{
-  background-color: #1ec2a8;
+  background-color: #1ec2a8 !important;
   color:#fff;
   border-radius: 3px;
   padding :8px 20px;

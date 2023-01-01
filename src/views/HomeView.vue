@@ -14,6 +14,12 @@
 
   <!-- famous stores  -->
   <famouseStores />
+
+  <!-- home offers  -->
+  <homeOffers />
+
+  <!-- footer  -->
+  <pageFooter />
 </template>
 
 <script>
@@ -23,7 +29,9 @@ import pageHeader from '../components/home/pageHeader.vue';
 import HomeParts from '../components/home/HomeParts.vue';
 import newOffers from '../components/home/NewOffers.vue';
 import financialOffers from '../components/home/financialOffers.vue';
-import famouseStores from '../components/home/famousStores.vue'
+import famouseStores from '../components/home/famousStores.vue';
+import homeOffers from '../components/home/homeOffers.vue';
+import pageFooter from '../components/home/pageFooter.vue'
 export default defineComponent({
   name: 'HomeView',
 
@@ -32,7 +40,9 @@ export default defineComponent({
     HomeParts,
     newOffers,
     financialOffers,
-    famouseStores
+    famouseStores,
+    homeOffers,
+    pageFooter
   },
 });
 </script>

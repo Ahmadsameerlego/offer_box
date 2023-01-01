@@ -20,27 +20,27 @@
                   <ul class="navbar-nav mr-auto flex-row">
 
                     <li class="nav-item">
-                      <a class="nav-link active" href="#">الرئيسية</a>
+                      <router-link to="/" class="nav-link" :class="{active : $route.path === '/'}"> الرئيسية </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <a class="nav-link" href="#">المتاجر</a>
+                      <router-link to="/stores" class="nav-link" :class="{ active : $route.path === '/stores' }"> المتاجر </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <a class="nav-link" href="#">الاعلانات</a>
+                      <router-link to="/offers" class="nav-link" :class="{ active: $route.path === '/offers' }"> الاعلانات </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <a class="nav-link" href="#">النفضلة</a>
+                      <router-link to="/favorites" class="nav-link"  :class="{ active : $route.path === '/favorites' }"> المفضلة </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <a class="nav-link" href="#">من نحن</a>
+                      <router-link to="/" class="nav-link"> من نحن </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <a class="nav-link" href="#">تواصل معنا</a>
+                      <router-link to="/" class="nav-link"> تواصل معنا   </router-link>
                     </li>
 
 
@@ -115,10 +115,12 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
                     <li class="first_drop">
-                      <a class="dropdown-item" href="#">
+
+                      <router-link class="dropdown-item" to="/profile">
                         <i class="fa-regular fa-user"></i>
                         <span>حسابي</span>
-                      </a>
+                      </router-link>
+                      
                     </li>
 
                     <li>
