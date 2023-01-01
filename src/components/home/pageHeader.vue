@@ -124,10 +124,14 @@
                     </li>
 
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <router-link class="dropdown-item" :to="{name:'HomeLogin'}">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>تسجيل الخروج</span>
-                      </a>
+                      </router-link>
+                      <!-- <a class="dropdown-item" href="#">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>تسجيل الخروج</span>
+                      </a> -->
                     </li>
 
                   </ul>

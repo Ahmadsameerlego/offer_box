@@ -21,6 +21,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, far, fab)
 dom.watch();
 
+
 // import axios 
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3000'

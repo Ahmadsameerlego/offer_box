@@ -7,6 +7,7 @@ import singleStore from '../views/singleStore.vue';
 import UserProfile from '../views/UserProofile.vue'
 
 
+
 const routes = [
   {
     path: '/',
@@ -38,6 +39,7 @@ const routes = [
     name : 'profile',
     component : UserProfile
   }
+
 ]
 
 const router = createRouter({
