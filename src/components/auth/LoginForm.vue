@@ -42,9 +42,9 @@
         <div class="form__label">
           <input
             class="default_input"
-            type="password"
             required=""
             placeholder="الرجاء إدخال كلمة المرور"
+            :type="passwordFieldType" v-model="password"
           />
           <label class="float__label" for="">الرجاء إدخال كلمة المرور</label>
           <span class="icon-input">
@@ -56,6 +56,7 @@
             ></v-img>
           </span>
           <v-btn class="float_btn" color="white" elevation="0" small
+            type="button" @click="switchVisibility"
             ><v-img
               lazy-src="../../assets/eye-close.png"
               height="25"
@@ -71,6 +72,12 @@
       <div class="mt-3 mb-3 d-flex justify-content-center">
         <button class="main_btn up" color="#1ec2a8" elevation="0" x-large>تسجيل الدخول</button>
       </div>
+      <div class="mt-3 mb-3 d-flex justify-content-center" style="gap:5px">
+        <span>ليس لديك حساب ؟</span>
+        <router-link class="default-link mainColor" :to="{ name: 'HomeRegester' }"
+        >تسجيل جديد</router-link
+        >
+      </div>
     </form>
   </div>
 </template>
@@ -79,10 +86,35 @@
 export default {
   data: () => ({
     items: ["+996", "+20", "565", "+10"],
+    password: "",
+    passwordFieldType: "password"
   }),
+  methods: {
+    switchVisibility() {
+      this.passwordFieldType = this.passwordFieldType === "password" ? "text" : "password";
+    }
+  },
 };
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+    $mainColor: #1ec2a8;
+    .mainColor{
+      color: $mainColor;
+    }
+.v-select {
+  position: absolute;
+  line-height: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  .v-field__append-inner {
+    padding-top: 12px;
+  }
+  .v-field--variant-filled {
+    .v-field__overlay {
+      background-color: unset;
+    }
+  }
+}
 </style>

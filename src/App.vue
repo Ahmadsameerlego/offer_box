@@ -29,6 +29,12 @@ export default {
 
 <style lang="scss">
     $base-color: #1ec2a8;
+    $mainColor: #1ec2a8;
+    $mainColor2: #bdbaba;
+
+    .mainColor{
+      color: $mainColor;
+    }
 
 *{
   margin: 0;
@@ -88,10 +94,6 @@ a{
   text-decoration: none !important;
   // color: ;
 }
-
-$mainColor: #1ec2a8;
-$mainColor2: #bdbaba;
-
 
 // inputs style
 .form__label {
@@ -202,21 +204,7 @@ textarea.default_input {
   min-height: 150px;
   padding: 20px !important;
 }
-.v-select {
-  position: absolute;
-  line-height: 1;
-  left: 0;
-  top: 0;
-  height: 100%;
-  .v-field__append-inner {
-    padding-top: 12px;
-  }
-  .v-field--variant-filled {
-    .v-field__overlay {
-      background-color: unset;
-    }
-  }
-}
+
 .default-link {
   color: $mainColor2;
 }
@@ -224,13 +212,18 @@ textarea.default_input {
   color: #fff;
 }
 
-// .main-btn{
-//       height: 45px !important;
-//       padding: 0 25px !important;
-//       .v-btn__content{
-//         color: #fff;
-//       }
-//     }
+// font size
+@for $i from 1 through 100 {
+    .font#{$i} {
+        font-size: $i + 2 + px !important;
+    }
+}
+// flex gap
+@for $i from 1 through 50 {
+    .gap#{$i} {
+        gap: $i + px !important;
+    }
+}
 
     // button style
 
@@ -346,5 +339,6 @@ textarea.default_input {
         }
     }
 }
+
 </style>
 

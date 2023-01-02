@@ -58,7 +58,7 @@
                 <googleMap />
 
                 <!-- alerts  -->
-                <router-link to="/" class="alert_Icon">
+                <router-link to="/NotificationPage" class="alert_Icon">
                   <i class="fa-solid fa-bell"></i>
                   <span class="alert_cont">10</span>
                 </router-link>
@@ -126,7 +126,7 @@ import googleMap from './googleMap.vue'
 export default {
     data(){
       return{
-        src : require('../../assets/logo.png'),
+        src : require('../../assets/logoz.png'),
         items: ['foo', 'bar', 'fizz', 'buzz'],
         value: null,
         dialog: false,
