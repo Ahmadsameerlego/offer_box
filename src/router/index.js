@@ -9,6 +9,11 @@ import HomeLogin from '../views/HomeLogin.vue';
 import forgetPassowrd from '../views/forgetPassowrd.vue';
 import AboutUs from '../views/AboutUs.vue';
 import ContactUs from '../views/contactUs.vue'
+import confirmCode from '../views/confirmCode.vue';
+import confirmPassword from '../views/confirmPassword.vue';
+import HomeRegester from '../views/HomeRegester.vue';
+import OfferDescription from '../views/OfferDescription.vue';
+import NotificationPage from '../views/NotificationPage.vue';
 
 
 
@@ -24,6 +29,11 @@ const routes = [
     component: HomeLogin
   },
   {
+    path: '/HomeRegester',
+    name: 'HomeRegester',
+    component: HomeRegester
+  },
+  {
     path: '/forgetPassowrd',
     name: 'forgetPassowrd',
     component: forgetPassowrd
@@ -32,6 +42,21 @@ const routes = [
     path : '/stores',
     name : 'stores',
     component : siteStores
+  },
+  {
+    path : '/NotificationPage',
+    name : 'NotificationPage',
+    component : NotificationPage
+  },
+  {
+    path : '/confirmCode',
+    name : 'confirmCode',
+    component : confirmCode
+  },
+  {
+    path : '/confirmPassword',
+    name : 'confirmPassword',
+    component : confirmPassword
   },
   {
     path: '/offers',
@@ -62,7 +87,12 @@ const routes = [
     path : '/ContactUs',
     name : 'ContactUs',
     component : ContactUs
-  }
+  },{
+
+    path: '/OfferDescription/:id',
+    name : 'OfferDescription',
+    component : OfferDescription
+  },
 
 ]
 

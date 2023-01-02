@@ -50,6 +50,20 @@ export default {
 };
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+.v-select {
+  position: absolute;
+  line-height: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  .v-field__append-inner {
+    padding-top: 12px;
+  }
+  .v-field--variant-filled {
+    .v-field__overlay {
+      background-color: unset;
+    }
+  }
+}
 </style>
