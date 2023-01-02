@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-4">
-        <h5 class="labeledSection fw-bold">الاقسام</h5>
+        <h5 class="labeledSection fw-bold"> {{ $t('home.parts') }} </h5>
          <swiper
             :slidesPerView="6"
             :spaceBetween="12"

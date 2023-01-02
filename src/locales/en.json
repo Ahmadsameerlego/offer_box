@@ -1,0 +1,69 @@
+{
+    "nav" : {
+      "home" : "Home",
+      "stores" : "Stores",
+      "offers" : "Offers",
+      "favs" : "favourites" ,
+      "who" : "About Us",
+      "contact" : "Contact Us",
+      "account" : "Profile",
+      "logout" : "Log Out",
+      "searchOffer" : "Search For Offer ....",
+      "storeDepend" : "filter depend on ",
+      "governorate" : "governorate",
+      "city" : "city",
+      "new" : "newest",
+      "old" : "oldest",
+      "near" : "nearest"
+    },
+    "footer" : {
+      "about" : "About",
+      "contactUS" : "Contact Us",
+      "commonQues" : "Common Questions",
+      "WhoWe" : "Who Are We" ,
+      "conditions" : "Conditions",
+      "followUs" : "follow us to keep in touch via email",
+      "callUs" : "Call Us",
+      "email" : "E-mail",
+      "sub" : "subscribe",
+      "download" : "download app now",
+      "copyRight" : "All Rights Reserved By Offer Box 2022",
+      "awamer" : "Awamer El-Shabaka",
+      "desin" : "Designed By"
+    },
+    "home":{
+      "parts" : "Parts",
+      "currentOffs" : "Modern Offers",
+      "allStores" : "All Stores",
+      "famousStore" : "Famous Stores",
+      "showStore" : "Show The Store",
+      "offers" : "Offers",
+      "allOffers" : "All Offers"
+    },
+    "contact" : {
+      "name" : "username",
+      "nameplc" : "please , enter username",
+      "mail" : "email",
+      "mailplc" : "please, enter email",
+      "spec" : "specific filed",
+      "selcspec" : "please, enter your filed",
+      "message" : "message",
+      "messageplc" : "leave your message",
+      "send" : "send"
+    },
+    "profile" : {
+      "personal" : "Personal Profile",
+      "privacy" : "Privacy Policy",
+      "conditions" : "Conditions And Terms",
+      "howWork" : "How Site Works ?",
+      "alertSet" : "Alerts Settings",
+      "commionQues" : "Common Questions",
+      "siteLang" : "Site Language"
+    },
+    "common" : 
+    {
+      "more" : "More",
+      "appStats" : "App Statistics",
+      "statisText" : "we show the statistics of offer box app"
+    }
+}

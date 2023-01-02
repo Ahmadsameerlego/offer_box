@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4">
-        <h5 class="labeledSection fw-bold">احدث الاعلانات</h5>
+        <h5 class="labeledSection fw-bold">{{ $t('home.currentOffs') }}</h5>
 
         <section class="mt-4">
 
@@ -34,7 +34,7 @@
 
             </div>
 
-            <router-link to="/" class="button d-flex justify-content-center align-items-center"> المزيد </router-link>
+            <router-link to="/" class="button d-flex justify-content-center align-items-center"> {{ $t('common.more') }} </router-link>
         </section>
   </div>
 </template>

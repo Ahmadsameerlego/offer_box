@@ -1,0 +1,39 @@
+body.ltr{
+    direction: ltr !important;
+    text-align: left !important;
+    .v-locale--is-ltr{
+      direction: ltr !important;
+    }
+    header #search svg {
+      right: 18px;
+      left: auto;
+    }
+    .single_store .store_status {
+      right: 10px;
+      left: auto;
+    }
+     .singleNewOffer .offerTime {
+      right: 10px;
+      left: auto;
+    }
+    .downloadApp img {
+      margin-left: auto;
+      margin-right: 12px;
+    }
+    .customCheck img {
+      left: 22px;
+      right: auto;
+    }
+    .contactForm select{
+      background-position: right 0.75rem center;
+    }
+    .accordion-button::after {
+      margin-left: auto !important;
+      margin-right: 0;
+      transform: rotate(-90deg);
+    }
+    .accHeaderIcon{
+      margin-right: 12px;
+      margin-left: auto;
+    }
+}

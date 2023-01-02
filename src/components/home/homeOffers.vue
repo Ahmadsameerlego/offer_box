@@ -1,10 +1,10 @@
 <template>
   <div class="container mt-4">
     <div class="d-flex justify-content-between">
-        <h5 class="labeledSection fw-bold">الاعلانات</h5>
+        <h5 class="labeledSection fw-bold"> {{ $t('home.offers') }} </h5>
 
         <router-link to="/" >
-            <h6 class="allStores">جميع الاعلانات</h6>
+            <h6 class="allStores"> {{ $t('home.allOffers') }} </h6>
         </router-link>
     </div>
 

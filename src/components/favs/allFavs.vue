@@ -1,7 +1,7 @@
 <template>
   <section id="favs" class="mt-4">
     <div class="container">
-        <h5 class="labeledSection fw-bold">المفضلة</h5>
+        <h5 class="labeledSection fw-bold">{{$t('nav.favs')}}</h5>
         <section class="favs mt-4">
             <div class="row">
                 <div class="col-md-4">

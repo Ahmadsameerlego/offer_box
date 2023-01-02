@@ -1,24 +1,24 @@
 <template>
   <section id="offers" class="mt-4">
     <div class="container">
-        <h5 class="labeledSection fw-bold">الاعلانات</h5>
+        <h5 class="labeledSection fw-bold"> {{ $t('nav.offers') }} </h5>
 
       <!-- filter process  -->
       <section class="filter_process mt-3">
-        <h6 class="">فلتر حسب</h6>
+        <h6 class="">{{ $t('nav.storeDepend') }}</h6>
 
         <form>
             <v-row align="center">
                 <v-col class="customCheck d-flex" cols="12" sm="3">
                     <!-- المحافظة  -->
-                    <v-select :items="items" label="المحافظة" solo></v-select>
+                    <v-select :items="items" :label="$t('nav.governorate')" solo></v-select>
 
                     <img :src="flag" alt="" />
                 </v-col>
 
                 <v-col class="customCheck d-flex" cols="12" sm="3">
                     <!-- المدينة  -->
-                    <v-select :items="items" label="المدينة" solo></v-select>
+                    <v-select :items="items" :label="$t('nav.city')" solo></v-select>
 
                     <img :src="flag" alt="" />
                 </v-col>
@@ -27,21 +27,21 @@
                     <v-checkbox
                     v-model="current"
                     color="info"
-                    label="الاحدث"
+                    :label="$t('nav.new')"
                     class="shrink mr-2 mt-0"
                     ></v-checkbox>
 
                     <v-checkbox
                     v-model="old"
                     color="info"
-                    label="الاقدم"
+                    :label="$t('nav.old')"
                     class="shrink mr-2 mt-0"
                     ></v-checkbox>
 
                     <v-checkbox
                     v-model="nearest"
                     color="info"
-                    label="الاقرب"
+                    :label="$t('nav.near')"
                     class="shrink mr-2 mt-0"
                     ></v-checkbox>
                 </div>

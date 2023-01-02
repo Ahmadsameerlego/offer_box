@@ -2,10 +2,10 @@
     <div class="container mt-4">
 
         <div class="d-flex justify-content-between">
-            <h5 class="labeledSection fw-bold">اشهر المتاجر</h5>
+            <h5 class="labeledSection fw-bold"> {{ $t('home.famousStore') }} </h5>
 
             <router-link to="/" >
-                <h6 class="allStores">جميع المتاجر</h6>
+                <h6 class="allStores"> {{ $t('home.allStores') }} </h6>
             </router-link>
         </div>
 
@@ -27,7 +27,7 @@
                             <span> شارع الصندوق الاسود , الرياض </span>
                         </p>
 
-                        <router-link to="/" class="button d-flex mx-auto w-75"> الاطلاع على المتجر </router-link>
+                        <router-link to="/" class="button d-flex mx-auto w-75"> {{ $t('home.showStore') }} </router-link>
 
                         <div class="store_status">
                             <span class="status"></span>

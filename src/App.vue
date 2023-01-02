@@ -7,15 +7,25 @@
 </template>
 
 <script>
-
+import '../src/assets/css/ltr.scss'
 export default {
   name: 'App',
 
   data: () => ({
     //
   }),
+   mounted(){
+        if( sessionStorage.getItem('locale') == 'en' ){
+            document.querySelector('body').classList.add('ltr')
+        }else{
+            document.querySelector('body').classList.remove('ltr')
+
+        }
+  }
 }
 </script>
+
+
 
 <style lang="scss">
     $base-color: #1ec2a8;
@@ -337,3 +347,4 @@ textarea.default_input {
     }
 }
 </style>
+

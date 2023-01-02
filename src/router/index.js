@@ -5,6 +5,10 @@ import siteOffers from '../views/SiteOffers.vue';
 import siteFavs from '../views/siteFavourites.vue';
 import singleStore from '../views/singleStore.vue';
 import UserProfile from '../views/UserProofile.vue'
+import HomeLogin from '../views/HomeLogin.vue';
+import forgetPassowrd from '../views/forgetPassowrd.vue';
+import AboutUs from '../views/AboutUs.vue';
+import ContactUs from '../views/contactUs.vue'
 
 
 
@@ -13,6 +17,16 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/HomeLogin',
+    name: 'HomeLogin',
+    component: HomeLogin
+  },
+  {
+    path: '/forgetPassowrd',
+    name: 'forgetPassowrd',
+    component: forgetPassowrd
   },
   {
     path : '/stores',
@@ -38,6 +52,16 @@ const routes = [
     path : '/profile',
     name : 'profile',
     component : UserProfile
+  },
+  {
+    path : '/about-us',
+    name : 'about-us',
+    component :AboutUs
+  },
+  {
+    path : '/ContactUs',
+    name : 'ContactUs',
+    component : ContactUs
   }
 
 ]

@@ -26,9 +26,9 @@ dom.watch();
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3000'
 
-// // import i18n 
-// import VueI18n from 'vue-i18n'
-// import i18n from './i18n'
+// import i18n 
+import VueI18n from 'vue-i18n'
+import i18n from './i18n'
 
 
 
@@ -36,5 +36,6 @@ createApp(App)
   .use(router)
   .use(store)
   .use(vuetify)
+  .use(i18n).use(VueI18n)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount('#app')

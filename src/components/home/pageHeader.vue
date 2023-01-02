@@ -20,27 +20,27 @@
                   <ul class="navbar-nav mr-auto flex-row">
 
                     <li class="nav-item">
-                      <router-link to="/" class="nav-link" :class="{active : $route.path === '/'}"> الرئيسية </router-link>
+                      <router-link to="/" class="nav-link" :class="{active : $route.path === '/'}"> {{  $t('nav.home')}} </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <router-link to="/stores" class="nav-link" :class="{ active : $route.path === '/stores' }"> المتاجر </router-link>
+                      <router-link to="/stores" class="nav-link" :class="{ active : $route.path === '/stores' }"> {{  $t('nav.stores')}} </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <router-link to="/offers" class="nav-link" :class="{ active: $route.path === '/offers' }"> الاعلانات </router-link>
+                      <router-link to="/offers" class="nav-link" :class="{ active: $route.path === '/offers' }"> {{  $t('nav.offers')}} </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <router-link to="/favorites" class="nav-link"  :class="{ active : $route.path === '/favorites' }"> المفضلة </router-link>
+                      <router-link to="/favorites" class="nav-link"  :class="{ active : $route.path === '/favorites' }"> {{  $t('nav.favs')}} </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <router-link to="/" class="nav-link"> من نحن </router-link>
+                      <router-link to="/about-us" class="nav-link" :class="{ active : $route.path === '/about-us' }"> {{  $t('nav.who')}} </router-link>
                     </li>
 
                     <li class="nav-item">
-                      <router-link to="/" class="nav-link"> تواصل معنا   </router-link>
+                      <router-link to="/ContactUs" class="nav-link" :class="{ active : $route.path === '/ContactUs' }"> {{  $t('nav.contact')}}   </router-link>
                     </li>
 
 
@@ -55,45 +55,7 @@
                 <!-- location  -->
                 
 
-                <v-dialog
-                  v-model="dialog"
-                  width="500"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="transparent lighten-2"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="dialog = true"
-                    >
-                      <i class="fa-solid fa-location-dot"></i>
-                    </v-btn>
-                  </template>
-
-                  <v-card>
-                    <v-card-title class="text-h5 grey lighten-2">
-                      Privacy Policy
-                    </v-card-title>
-
-                    <v-card-text>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </v-card-text>
-
-                    <v-divider></v-divider>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
-                      >
-                        I accept
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                <googleMap />
 
                 <!-- alerts  -->
                 <router-link to="/" class="alert_Icon">
@@ -118,7 +80,7 @@
 
                       <router-link class="dropdown-item" to="/profile">
                         <i class="fa-regular fa-user"></i>
-                        <span>حسابي</span>
+                        <span>{{  $t('nav.account')}}</span>
                       </router-link>
                       
                     </li>
@@ -126,12 +88,9 @@
                     <li>
                       <router-link class="dropdown-item" :to="{name:'HomeLogin'}">
                         <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>تسجيل الخروج</span>
+                        <span>{{  $t('nav.logout')}}</span>
                       </router-link>
-                      <!-- <a class="dropdown-item" href="#">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>تسجيل الخروج</span>
-                      </a> -->
+
                     </li>
 
                   </ul>
@@ -146,7 +105,7 @@
                   :items="items"
                   dense
                   filled
-                  label="البحث عن اعلان"
+                  :label="$t('nav.searchOffer')"
                   class="searchBox"
               ></v-autocomplete>
               <i class="fa-solid fa-magnifying-glass"></i>
@@ -162,7 +121,8 @@
 </template>
 
 <script>
-import PageSlider from './PageSlider.vue'
+import PageSlider from './PageSlider.vue';
+import googleMap from './googleMap.vue'
 export default {
     data(){
       return{
@@ -170,11 +130,15 @@ export default {
         items: ['foo', 'bar', 'fizz', 'buzz'],
         value: null,
         dialog: false,
-      }
+
+    }
     },
     components:{
-      PageSlider
-    }
+      PageSlider,
+      googleMap,
+
+    },
+
 
     
 }
@@ -182,6 +146,7 @@ export default {
 
 <style lang="scss">
 $base-color: #1ec2a8;
+
 header{
   position: relative;
   height: 47vh;

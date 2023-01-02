@@ -4,19 +4,19 @@
       <div class="row">
 
         <div class="col-md-4">
-            <h6 class="labeledSection  mb-4">تعرف علينا</h6>
+            <h6 class="labeledSection  mb-4"> {{ $t('footer.about') }} </h6>
 
             <div class="main_links d-flex flex-column mt-3">
-              <router-link to="/"> من نحن </router-link>
-              <router-link to="/"> الشروط والاحكام </router-link>
-              <router-link to="/"> اسئلة مكررة </router-link>
-              <router-link to="/"> اتصل بنا </router-link>
+              <router-link to="/"> {{ $t('footer.WhoWe') }} </router-link>
+              <router-link to="/"> {{ $t('footer.conditions') }} </router-link>
+              <router-link to="/"> {{ $t('footer.commonQues') }} </router-link>
+              <router-link to="/"> {{ $t('footer.contactUS') }} </router-link>
             </div>
         </div>
 
 
         <div class="col-md-4">
-            <h6 class="labeledSection  mb-4">تواصل معنا</h6>
+            <h6 class="labeledSection  mb-4"> {{ $t('footer.callUs') }} </h6>
 
             <div class="contactUs mt-3">
 
@@ -58,19 +58,19 @@
         </div>
 
         <div class="subscription col-md-4 ">
-            <h6 class="labeledSection  mb-4">البريد الالكتروني</h6>
+            <h6 class="labeledSection  mb-4"> {{ $t('footer.email') }} </h6>
 
             <div class="form-group">
               <form>
-                <label for="" class="follow_us"> تابعنا ليصلك كل جديد من خلال البريد الالكتروني </label>
+                <label for="" class="follow_us">{{ $t('footer.followUs') }}</label>
 
-                <input type="text" v-model="subscription" class='form-control' placeholder="البريد الالكتروني">
+                <input type="text" v-model="subscription" class='form-control' :placeholder="$t('footer.email')">
 
                 <v-btn
                   elevation="2"
                   class="button w-50"
                   
-                > الاشتراك </v-btn>
+                > {{ $t('footer.sub') }} </v-btn>
               </form>
             </div>
         </div>
@@ -79,7 +79,7 @@
 
       <!-- download app  -->
       <div class="downloadApp mt-3">
-        <h6>حمل التطبيق الان</h6>
+        <h6>  {{ $t('footer.download') }} </h6>
         <div class="d-flex">
           <a href="#">
             <img :src="appStore" alt="">
@@ -93,8 +93,8 @@
 
       <!-- copy right  -->
       <div class="copyRight d-flex justify-content-between mt-4">
-        <p>جميع الحقوق محفوظة لدى offerBox 2022</p>
-        <p> تصميم <a href="https://aait.sa/">اوامر الشبكة</a> </p>
+        <p> {{ $t('footer.copyRight') }} </p>
+        <p> {{ $t('footer.desin') }} <a href="https://aait.sa/"> {{ $t('footer.awamer') }} </a> </p>
       </div>
     </div>
   </footer>
@@ -174,14 +174,7 @@ export default {
         color:#fff !important;
       }
     }
-    .downloadApp{
-      img{
-        width: 190px;
-        height: 67px;
-        object-fit: contain;
-        margin-left: 12px;
-      }
-    }
+
     .copyRight{
       p{
         font-size: 15px;
@@ -192,4 +185,13 @@ export default {
       }
     }
   }
+
+    .downloadApp{
+      img{
+        width: 190px;
+        height: 67px;
+        object-fit: contain;
+        margin-left: 12px;
+      }
+    }
 </style>
