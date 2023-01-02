@@ -55,7 +55,7 @@
         <div class="row">
             <div class="col-md-4">
                 <!-- single new offer  -->
-                <router-link to="/">
+                <router-link :to="'/OfferDescription/'+1">
                     <div class="singleNewOffer">
 
                         <!-- offer image  -->
