@@ -9,13 +9,21 @@
 
             <!-- nav bar  -->
             <section class="NavBar pt-4 mb-5 d-flex justify-content-between align-items-baseline">
+
+              <!-- toggle navbar -->
+              <div class="hamburger" @click="toggleNav()" ref="hamburgar">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+              </div>
+
               <!-- logo  -->
               <div id="logo">
                   <img :src="src" alt="">
               </div>
 
               <!-- navbar -->
-              <nav class="navbar navbar-expand-lg navbar-light">
+              <nav class="navbar navbar-expand-lg navbar-light navSmallScreen" ref="navSmallScreen">
                 <div class="" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto flex-row">
 
@@ -136,8 +144,26 @@ export default {
     components:{
       PageSlider,
       googleMap,
-
     },
+    methods:{
+      toggleNav(){
+
+        const hamburger = this.$refs.hamburgar;
+        const navLinks = this.$refs.navSmallScreen
+        const links = document.querySelectorAll(".navSmallScreen li");
+
+
+        //Animate Links
+        navLinks.classList.toggle("open");
+        links.forEach(link => {
+            link.classList.toggle("fadee");
+        });
+
+        //Hamburger Animation
+        hamburger.classList.toggle("toggle");
+
+      }    
+    }
 
 
     
@@ -269,6 +295,101 @@ header{
 
     }
   }
+
+  /*Styling Hamburger Icon*/
+  .hamburger div {
+      width: 30px;
+      height: 3px;
+      background: var(--main_color);
+      margin: 5px;
+      transition: all 0.3s ease;
+  }
+
+  .hamburger {
+      display: none;
+  }
+
+  /*Animating Hamburger Icon on Click*/
+  .toggle .line1 {
+      transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .toggle .line2 {
+      transition: all 0.7s ease;
+      width: 0;
+  }
+
+  .toggle .line3 {
+      transform: rotate(45deg) translate(-5px, -6px);
+  }
 }
 
+</style>
+
+<!-- responsive --> 
+<style scoped>
+@media( max-width : 991.98px ){
+   .hamburger{
+        display: block;
+        position: relative;
+        cursor: pointer;
+        right: 0%;
+        top: 12%;
+        transform: translate(-5%, -50%);
+        z-index: 4;
+        transition: all 0.7s ease;
+        margin-top: 20px;
+    }
+    .navSmallScreen{
+        position: fixed;
+        background: #131418e3;
+        height: 100vh;
+        width: 100%;
+        flex-direction: column;
+        clip-path: circle(50px at 90% -20%);
+        -webkit-clip-path: circle(50px at 90% -10%);
+        transition: all 1s ease-out;
+        pointer-events: none;
+        z-index: 2;
+        right: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .navSmallScreen.open{
+        clip-path: circle(1000px at 90% -10%);
+        -webkit-clip-path: circle(1000px at 90% -10%);
+        pointer-events: all;
+    }
+    .navSmallScreen li{
+        opacity: 0;
+    }
+    .navSmallScreen li:nth-child(1){
+        transition: all 0.5s ease 0.2s;
+    }
+    .navSmallScreen li:nth-child(2){
+        transition: all 0.5s ease 0.4s;
+    }
+    .navSmallScreen li:nth-child(3){
+        transition: all 0.5s ease 0.6s;
+    }
+    .navSmallScreen li:nth-child(4){
+        transition: all 0.5s ease 0.7s;
+    }
+    .navSmallScreen li:nth-child(5){
+        transition: all 0.5s ease 0.8s;
+    }
+    .navSmallScreen li:nth-child(6){
+        transition: all 0.5s ease 0.9s;
+        margin: 0;
+    }
+    .navSmallScreen li:nth-child(7){
+        transition: all 0.5s ease 1s;
+        margin: 0;
+    }
+    li.fadee{
+        opacity: 1;
+    }
+}
 </style>

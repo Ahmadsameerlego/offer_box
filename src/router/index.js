@@ -41,7 +41,7 @@ const routes = [
   {
     path : '/stores',
     name : 'stores',
-    component : siteStores
+    component : siteStores,
   },
   {
     path : '/NotificationPage',
