@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12" style="min-height: 230px;">
-          <LoginWrapper titleAuth="تسجيل حساب جديد" />
+          <LoginWrapper :titleAuth="$t('auth.signup')" />
         </div>
         <div class="col-12">
           <div class="row justify-content-center">
