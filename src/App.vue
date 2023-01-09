@@ -1,96 +1,95 @@
 <template>
   <v-app>
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import '../src/assets/css/ltr.scss'
+import "../src/assets/css/ltr.scss";
 export default {
-  name: 'App',
+  name: "App",
 
   data: () => ({
     //
   }),
-   mounted(){
-        if( sessionStorage.getItem('locale') == 'en' ){
-            document.querySelector('body').classList.add('ltr')
-        }else{
-            document.querySelector('body').classList.remove('ltr')
-
-        }
-  }
-}
+  mounted() {
+    if (sessionStorage.getItem("locale") == "en") {
+      document.querySelector("body").classList.add("ltr");
+    } else {
+      document.querySelector("body").classList.remove("ltr");
+    }
+  },
+};
 </script>
 
-
-
 <style lang="scss">
-    $base-color: #1ec2a8;
-    $mainColor: #1ec2a8;
-    $mainColor2: #bdbaba;
+$base-color: #1ec2a8;
+$mainColor: #1ec2a8;
+$mainColor2: #bdbaba;
 
-    .mainColor{
-      color: $mainColor;
-    }
+.mainColor {
+  color: $mainColor;
+}
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 body {
-    position: relative !important;
-    direction: rtl !important;
-    text-align: right !important;
-    color: #212121 !important;
-    font-family:'DIN-Arabic' , sans-serif !important;
-    background-color: #f7f7f7 !important;
+  position: relative !important;
+  direction: rtl !important;
+  text-align: start !important;
+  color: #212121 !important;
+  font-family: "DIN-Arabic", sans-serif !important;
+  background-color: #f7f7f7 !important;
 }
 @font-face {
-    font-family: 'DIN-Arabic-Bold';
-    src: url('assets/fonts/URW-DIN-Arabic-Bold.ttf');
+  font-family: "DIN-Arabic-Bold";
+  src: url("assets/fonts/URW-DIN-Arabic-Bold.ttf");
 }
 @font-face {
-    font-family: 'DIN-Arabic';
-    src: url('assets/fonts/URW-DIN-Arabic.ttf');
+  font-family: "DIN-Arabic";
+  src: url("assets/fonts/URW-DIN-Arabic.ttf");
 }
 @font-face {
-    font-family: 'Kalligraaf-Arabic-Medium';
-    src: url('assets/fonts/Kalligraaf-Arabic-Medium.ttf');
+  font-family: "Kalligraaf-Arabic-Medium";
+  src: url("assets/fonts/Kalligraaf-Arabic-Medium.ttf");
 }
-.fontBold{font-weight: 600;}
+.fontBold {
+  font-weight: 600;
+}
 .v-locale--is-ltr {
-    direction: rtl !important;
+  direction: rtl !important;
 }
-.labeledSection{
+.labeledSection {
   position: relative;
   width: fit-content;
-  &::before{
-    content: '';
+  &::before {
+    content: "";
     position: absolute;
     width: 100%;
-    height:3px;
+    height: 3px;
     background-color: #1ec2a8;
     left: 0;
     bottom: -7px;
   }
 }
-.button{
+.button {
   background-color: #1ec2a8 !important;
-  color:#fff;
+  color: #fff;
   border-radius: 3px;
-  padding :8px 20px;
+  padding: 8px 20px;
   text-decoration: none;
   margin-right: auto;
   margin-left: auto;
-  &:hover{
+  &:hover {
     color: #fff !important;
   }
 }
-a{
+a {
   text-decoration: none !important;
   // color: ;
 }
@@ -214,131 +213,128 @@ textarea.default_input {
 
 // font size
 @for $i from 1 through 100 {
-    .font#{$i} {
-        font-size: $i + 2 + px !important;
-    }
+  .font#{$i} {
+    font-size: $i + 2 + px !important;
+  }
 }
 // flex gap
 @for $i from 1 through 50 {
-    .gap#{$i} {
-        gap: $i + px !important;
-    }
+  .gap#{$i} {
+    gap: $i + px !important;
+  }
 }
 
-    // button style
+// button style
 
 .fill:hover,
 .fill:focus {
-    box-shadow: inset 0 0 0 2em $mainColor;
-    color: #fff;
+  box-shadow: inset 0 0 0 2em $mainColor;
+  color: #fff;
 }
 
 .pulse:hover,
 .pulse:focus {
-    animation: pulse 1s;
-    box-shadow: 0 0 0 2em rgba(#fff, 0);
+  animation: pulse 1s;
+  box-shadow: 0 0 0 2em rgba(#fff, 0);
 }
 
 @keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 #fff;
-    }
+  0% {
+    box-shadow: 0 0 0 0 #fff;
+  }
 }
 
 .close:hover,
 .close:focus {
-    box-shadow:
-        inset -3.5em 0 0 0 $mainColor,
-        inset 3.5em 0 0 0 $mainColor;
+  box-shadow: inset -3.5em 0 0 0 $mainColor, inset 3.5em 0 0 0 $mainColor;
 }
 
 .raise:hover,
 .raise:focus {
-    box-shadow: 0 0.5em 0.5em -0.4em #fff;
-    transform: translateY(-0.25em);
+  box-shadow: 0 0.5em 0.5em -0.4em #fff;
+  transform: translateY(-0.25em);
 }
 
 .up:hover,
 .up:focus {
-    box-shadow: inset 0 -4.25em 0 0 #fff;
-    color: $mainColor !important;
-    border: 1px solid $mainColor;
+  box-shadow: inset 0 -4.25em 0 0 #fff;
+  color: $mainColor !important;
+  border: 1px solid $mainColor;
 }
 
 .slide:hover,
 .slide:focus {
-    box-shadow: inset 11.5em 0 0 0 #fff;
-    color: $mainColor !important;
-    border: 1px solid $mainColor;
+  box-shadow: inset 11.5em 0 0 0 #fff;
+  color: $mainColor !important;
+  border: 1px solid $mainColor;
 }
 
 .offset {
-    box-shadow:
-        0.3em 0.3em 0 0 var(--color),
-        inset 0.3em 0.3em 0 0 var(--color);
+  box-shadow: 0.3em 0.3em 0 0 var(--color), inset 0.3em 0.3em 0 0 var(--color);
 
-    &:hover,
-    &:focus {
-        box-shadow:
-            0 0 0 0 var(--mainOpacity),
-            inset 6em 3.5em 0 0 var(--mainOpacity);
-        color: #fff !important;
-    }
+  &:hover,
+  &:focus {
+    box-shadow: 0 0 0 0 var(--mainOpacity),
+      inset 6em 3.5em 0 0 var(--mainOpacity);
+    color: #fff !important;
+  }
 }
 
-
 .main_btn {
-    border-radius: 5px;
-    white-space: nowrap;
-    color: #fff;
-    padding: 5px 25px;
-    min-width: 200px;
-    height: 45px;
-    width: fit-content;
-    background-color: $mainColor;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: .3s all ease;
+  border-radius: 5px;
+  white-space: nowrap;
+  color: #fff;
+  padding: 5px 25px;
+  min-width: 200px;
+  height: 45px;
+  width: fit-content;
+  background-color: $mainColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s all ease;
 
-    &.fluid {
-        background-color: #fff;
-        color: $mainColor;
-        border: 2px solid $mainColor;
-    }
+  &.fluid {
+    background-color: #fff;
+    color: $mainColor;
+    border: 2px solid $mainColor;
+  }
 
-    &.radius {
-        border-radius: 30px;
-    }
+  &.radius {
+    border-radius: 30px;
+  }
 }
 
 .round_btn {
-    background-color: $mainColor;
+  background-color: $mainColor;
+  border-radius: 40px;
+  color: #fff;
+  padding: 10px 20px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+
+  &.fluid {
+    background-color: #fff;
     border-radius: 40px;
-    color: #fff;
-    padding: 10px 20px;
+    color: $mainColor;
     width: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 150px;
+    border: 1px solid $mainColor;
 
-    &.fluid {
-        background-color: #fff;
-        border-radius: 40px;
-        color: $mainColor;
-        width: fit-content;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid $mainColor;
-
-        &:hover {
-            background-color: $mainColor;
-            color: #fff;
-        }
+    &:hover {
+      background-color: $mainColor;
+      color: #fff;
     }
+  }
 }
 
+.bg-main {
+  background-color: $mainColor !important;
+  color: #ffffff !important;
+}
 </style>
-
