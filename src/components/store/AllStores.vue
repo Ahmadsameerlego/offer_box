@@ -54,41 +54,54 @@
       <!-- filtered store  -->
       <section class="filtered_section mt-3">
         <div class="row">
-          <div class="col-md-4 mb-4">
-            <!-- single store  -->
-            <div class="single_store">
-              <!-- store image -->
-              <div class="store_image">
-                <img :src="src" alt="" />
-              </div>
 
-              <h5 class="text-center">اسم المتجر</h5>
+          <v-lazy
+            v-model="isActive"
+            :options="{
+              threshold: .5
+            }"
+            min-height="200"
+            transition="scroll-y-transition"
+          >
 
-              <p
-                class="
-                  storeLocation
-                  d-flex
-                  justify-content-start
-                  align-items-center
-                "
-              >
-                <img :src="locaImage" alt="" />
-                <span> شارع الصندوق الاسود , الرياض </span>
-              </p>
+            <div class="col-md-4 mb-4">
+              <!-- single store  -->
+              <div class="single_store">
+                <!-- store image -->
+                <div class="store_image">
+                  <img :src="src" alt="" />
+                </div>
 
-              <router-link
-                :to="'/store/'+1"
-                class="button d-flex justify-content-center mx-auto w-75"
-              >
-                {{ $t('home.showStore') }}
-              </router-link>
+                <h5 class="text-center">اسم المتجر</h5>
 
-              <div class="store_status">
-                <span class="status"></span>
-                <p>مفتوح</p>
+                <p
+                  class="
+                    storeLocation
+                    d-flex
+                    justify-content-start
+                    align-items-center
+                  "
+                >
+                  <img :src="locaImage" alt="" />
+                  <span> شارع الصندوق الاسود , الرياض </span>
+                </p>
+
+                <router-link
+                  :to="'/store/'+1"
+                  class="button d-flex justify-content-center mx-auto w-75"
+                >
+                  {{ $t('home.showStore') }}
+                </router-link>
+
+                <div class="store_status">
+                  <span class="status"></span>
+                  <p>مفتوح</p>
+                </div>
               </div>
             </div>
-          </div>
+
+          </v-lazy>
+          
         </div>
       </section>
     </div>
@@ -104,6 +117,8 @@ export default {
       current: false,
       old: false,
       nearest: false,
+      isActive: false,
+
     };
   },
 };

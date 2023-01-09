@@ -56,6 +56,16 @@
             <div class="col-md-4">
                 <!-- single new offer  -->
                 <router-link :to="'/OfferDescription/'+1">
+
+
+                <v-lazy
+                    v-model="isActive"
+                    :options="{
+                    threshold: .5
+                    }"
+                    min-height="200"
+                    transition="scroll-y-transition"
+                >
                     <div class="singleNewOffer">
 
                         <!-- offer image  -->
@@ -74,6 +84,8 @@
                         <span class="offerCate"> الكترونيات </span>
 
                     </div>
+                </v-lazy>
+                    
                 </router-link>
             </div>
         </div>
@@ -91,6 +103,7 @@ export default {
             current: false,
             old: false,
             nearest: false,
+            isActive : false
 
         }
     }
