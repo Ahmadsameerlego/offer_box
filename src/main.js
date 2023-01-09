@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import Vuelidate from 'vuelidate'
 
 loadFonts();
 
@@ -36,6 +37,7 @@ createApp(App)
   .use(router)
   .use(store)
   .use(vuetify)
+  .use(Vuelidate)
   .use(i18n).use(VueI18n)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount('#app')

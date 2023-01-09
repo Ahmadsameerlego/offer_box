@@ -6,7 +6,7 @@
           <LoginForm />
         </div>
         <div class="col-md-6">
-          <LoginWrapper titleAuth="تسجيل الدخول" />
+          <LoginWrapper :titleAuth="$t('auth.login')" />
         </div>
       </div>
     </div>

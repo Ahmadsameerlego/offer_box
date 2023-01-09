@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="d-flex align-items-center justify-content-between">
       <h1 class="fontBold font20">إسم الاعلان</h1>
-      <span class="mainColor2">تاريخ الإضافة : 30/11/2023</span>
+      <span class="mainColor2">{{ $t('offers.additionDate') }}  : 30/11/2023 </span>
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <h2 class="fontBold font15">إسم المتجر</h2>
@@ -17,7 +17,7 @@
       </div>
       <div class="col-lg-6 col-12">
         <div class="d-flex flex-column gap20">
-          <h3 class="fontBold">وصف الإعلان</h3>
+          <h3 class="fontBold">{{ $t('offers.AdDescription') }}</h3>
           <p>
             هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا
             النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد
@@ -37,7 +37,7 @@
     </div>
     <div class="row mb-4">
       <div class="col-12 mb-3">
-        <h5 class="labeledSection fw-bold">إعلانات مشابهه</h5>
+        <h5 class="labeledSection fw-bold">{{ $t('offers.Similar') }}</h5>
       </div>
       <div class="col-lg-4 col-md-6 col-12 mb-3">
         <!-- single new offer  -->

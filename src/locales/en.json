@@ -65,5 +65,30 @@
       "more" : "More",
       "appStats" : "App Statistics",
       "statisText" : "we show the statistics of offer box app"
+    },
+    "offers" : 
+    {
+      "additionDate" : "published",
+      "AdDescription" : "Description",
+      "Similar" : "Similar advertisements"
+    },
+    "auth" : 
+    {
+      "wellcome" : "Welcome",
+      "userName" : "User Name",
+      "password" : "Password",
+      "confirmPassword" : "confirm password",
+      "phone" : "Phone Number",
+      "dataLogin" : "Please enter your account information to log in",
+      "dataRegester" : "Please enter account information for a new registration",
+      "insert" : "Please enter",
+      "login" : "login",
+      "signup" : "sign up",
+      "forgitPassword" : "forget your password ?",
+      "notsigned" : "Don't have an account?",
+      "signed" : "Already have an account?",
+      "confirm" : "confirm",
+      "dataConfirm" : "Please enter the verification code sent to your mobile",
+      "resetPassword" : "Reset Password"
     }
 }

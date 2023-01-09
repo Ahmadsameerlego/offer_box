@@ -1,39 +1,82 @@
-body.ltr{
+body.ltr {
+  direction: ltr !important;
+
+  .v-locale--is-ltr {
     direction: ltr !important;
-    text-align: left !important;
-    .v-locale--is-ltr{
-      direction: ltr !important;
+  }
+
+  header #search svg {
+    right: 18px;
+    left: auto;
+  }
+
+  .single_store .store_status {
+    right: 10px;
+    left: auto;
+  }
+
+  .singleNewOffer .offerTime {
+    right: 10px;
+    left: auto;
+  }
+
+  .downloadApp img {
+    margin-left: auto;
+    margin-right: 12px;
+  }
+
+  .customCheck img {
+    left: 22px;
+    right: auto;
+  }
+
+  .contactForm select {
+    background-position: right 0.75rem center;
+  }
+
+  .accordion-button::after {
+    margin-left: auto !important;
+    margin-right: 0;
+    transform: rotate(-90deg);
+  }
+
+  .accHeaderIcon {
+    margin-right: 12px;
+    margin-left: auto;
+  }
+
+  .v-select {
+    right: 0;
+    left: unset;
+  }
+
+  .form__label {
+    .icon-input {
+      left: 1px;
+      right: unset;
     }
-    header #search svg {
-      right: 18px;
-      left: auto;
+
+    .float_btn {
+      right: 3px;
+      left: unset;
     }
-    .single_store .store_status {
-      right: 10px;
-      left: auto;
+
+    .float__label {
+      right: unset;
+      left: 40px;
     }
-     .singleNewOffer .offerTime {
-      right: 10px;
-      left: auto;
+
+    .default_input:focus {
+      &+.float__label {
+        transform: translateX(-150%);
+      }
     }
-    .downloadApp img {
-      margin-left: auto;
-      margin-right: 12px;
+
+    .default_input:not(:placeholder-shown) {
+      &+.float__label {
+        transform: translateX(-150%);
+      }
     }
-    .customCheck img {
-      left: 22px;
-      right: auto;
-    }
-    .contactForm select{
-      background-position: right 0.75rem center;
-    }
-    .accordion-button::after {
-      margin-left: auto !important;
-      margin-right: 0;
-      transform: rotate(-90deg);
-    }
-    .accHeaderIcon{
-      margin-right: 12px;
-      margin-left: auto;
-    }
+  }
+
 }

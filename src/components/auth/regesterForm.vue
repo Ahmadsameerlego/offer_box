@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form action="">
+    <form ref="regestForm" @submit.prevent="submitForm">
       <div class="d-flex align-items-center flex-column">
         <v-img
           lazy-src="../../assets/logoz.png"
@@ -9,20 +9,22 @@
           src="../../assets/logoz.png"
         ></v-img>
 
-        <h2 class="fontBold">مرحبا بك</h2>
+        <h2 class="fontBold">{{ $t('auth.wellcome') }}</h2>
 
-        <p class="fontBold">الرجاء إدخال بيانات الحساب لتسجيل جديد</p>
+        <p class="fontBold">{{ $t('auth.dataRegester') }}</p>
       </div>
       <div class="mt-3 mb-3">
-        <h6 class="fontBold mb-0">إسم المستخدم</h6>
+        <h6 class="fontBold mb-0">{{ $t('auth.userName') }}</h6>
         <div class="form__label">
           <input
             class="default_input"
             type="text"
             required=""
-            placeholder="الرجاء إدخال إسم المستخدم"
+            name="userName"
+            v-modal="userName"
+            placeholder="{{ $t('auth.insert') }} {{ $t('auth.userName') }}"
           />
-          <label class="float__label" for="">الرجاء إدخال إسم المستخدم</label>
+          <label class="float__label" for="">{{ $t('auth.insert') }} {{ $t('auth.userName') }}</label>
           <span class="icon-input">
             <v-img
               lazy-src="../../assets/noun_user.png"
@@ -34,15 +36,17 @@
         </div>
       </div>
       <div class="mt-3 mb-3">
-        <h6 class="fontBold mb-0">رقم الجوال</h6>
+        <h6 class="fontBold mb-0">{{ $t('auth.phone') }}</h6>
         <div class="form__label">
           <input
             class="default_input"
             type="number"
             required=""
-            placeholder="الرجاء إدخال رقم الجوال"
+            name="phone"
+            v-modal="phone"
+            placeholder="{{ $t('auth.insert') }} {{ $t('auth.phone') }}"
           />
-          <label class="float__label" for="">الرجاء إدخال رقم الجوال</label>
+          <label class="float__label" for="">{{ $t('auth.insert') }} {{ $t('auth.phone') }}</label>
           <span class="icon-input">
             <v-img
               lazy-src="../../assets/noun_mobile.png"
@@ -51,20 +55,22 @@
               src="../../assets/noun_mobile.png"
             ></v-img>
           </span>
-          <v-select :items="items" solo></v-select>
+          <v-select :items="items" solo name="countryCode" v-model="countryCode"></v-select>
         </div>
       </div>
 
       <div class="mt-3 mb-3">
-        <h6 class="fontBold mb-0">كلمة المرور</h6>
+        <h6 class="fontBold mb-0">{{ $t('auth.password') }}</h6>
         <div class="form__label">
           <input
             class="default_input"
-            :type="typePass" v-model="password"
+            :type="typePass" 
+            v-model="password"
+            name="password"
             required=""
-            placeholder="الرجاء إدخال كلمة المرور"
+            placeholder="{{ $t('auth.insert') }} {{ $t('auth.password') }}"
           />
-          <label class="float__label" for="">الرجاء إدخال كلمة المرور</label>
+          <label class="float__label" for="">{{ $t('auth.insert') }} {{ $t('auth.password') }}</label>
           <span class="icon-input">
             <v-img
               lazy-src="../../assets/Unlock.png"
@@ -86,16 +92,18 @@
       </div>
 
       <div class="mt-3 mb-3">
-        <h6 class="fontBold mb-0">تأكيد كلمة المرور</h6>
+        <h6 class="fontBold mb-0">{{ $t('auth.confirmPassword') }}</h6>
         <div class="form__label">
           <input
             class="default_input"
-            :type="typePassConfrm" v-model="confirmPassword"
+            :type="typePassConfrm" 
+            v-model="confirmPassword"
+            name="confirmPassword"
             required=""
-            placeholder="الرجاء إدخال تأكيد كلمة المرور"
+            placeholder="{{ $t('auth.insert') }} {{ $t('auth.confirmPassword') }}"
           />
           <label class="float__label" for=""
-            >الرجاء إدخال تأكيد كلمة المرور</label
+            >{{ $t('auth.insert') }} {{ $t('auth.confirmPassword') }}</label
           >
           <span class="icon-input">
             <v-img
@@ -118,13 +126,13 @@
       </div>
       <div class="mt-3 mb-3 d-flex justify-content-center">
         <button class="main_btn up" color="#1ec2a8" elevation="0" x-large>
-          تسجيل
+          {{ $t('auth.signup') }}
         </button>
       </div>
       <div class="mt-3 mb-3 d-flex justify-content-center" style="gap: 5px">
-        <span>لديك حساب بالفعل ؟</span>
+        <span>{{ $t('auth.signed') }}</span>
         <router-link class="default-link mainColor" :to="{ name: 'HomeLogin' }"
-          >تسجيل دخول</router-link
+          >{{ $t('auth.login') }}</router-link
         >
       </div>
     </form>
@@ -132,9 +140,14 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data: () => ({
     items: ["+996", "+20", "565", "+10"],
+    userName: "",
+    phone: "",
+    countryCode: "",
     password: "",
     confirmPassword: "",
     typePass: "password",
@@ -146,6 +159,19 @@ export default {
     },
     confrmPassword() {
       this.typePassConfrm = this.typePassConfrm === "password" ? "text" : "password";
+    },
+    async submitForm(){
+      const formData = new FormData(this.$refs.regestForm)
+      await axios.post(
+        `https://jsonplaceholder.typicode.com/posts`,
+        formData ,
+      ).then((response) => {
+        if(response.status == 201){
+          console.log(response)
+        }
+      }).catch(e => {
+        console.error(e);
+      })
     }
   },
 };

@@ -6,7 +6,7 @@
             <confirmPasswordForm />
           </div>
           <div class="col-md-6">
-            <LoginWrapper titleAuth="تعيين كلمة مرور جديده" />
+            <LoginWrapper :titleAuth="$t('auth.resetPassword')" />
           </div>
         </div>
       </div>

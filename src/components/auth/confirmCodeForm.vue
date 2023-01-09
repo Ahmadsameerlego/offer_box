@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form action="">
+    <form ref="otpInputForm" @submit.prevent="submitForm">
       <div class="d-flex align-items-center flex-column">
         <v-img
           lazy-src="@/assets/logoz.png"
@@ -9,9 +9,9 @@
           src="@/assets/logoz.png"
         ></v-img>
 
-        <h2 class="fontBold">مرحبا بك</h2>
+        <h2 class="fontBold">{{ $t('auth.wellcome') }}</h2>
 
-        <p class="fontBold">الرجاء إدخال رمز التحقق المرسل الي جوالك</p>
+        <p class="fontBold">{{ $t('auth.dataConfirm') }}</p>
       </div>
       <div class="d-flex align-items-center justify-content-center">
         <v-otp-input
@@ -20,19 +20,22 @@
           separator=" "
           :num-inputs="6"
           :should-auto-focus="true"
+          v-modal="otpInput"
+          name="otpInput"
           :is-input-num="true"
           @on-change="handleOnChange"
           @on-complete="handleOnComplete"
         />
       </div>
       <div class="mt-3 mb-3 d-flex justify-content-center">
-        <button class="main_btn up">تأكيد</button>
+        <button class="main_btn up">{{ $t('auth.confirm') }}</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 // Import in a Vue component
 import VOtpInput from "vue3-otp-input";
 
@@ -53,10 +56,25 @@ export default {
 
     return { handleOnComplete, handleOnChange, otpInput };
   },
+  methods:{
+    async submitForm(){
+      const formData = new FormData(this.$refs.otpInputForm)
+      await axios.post(
+        `https://jsonplaceholder.typicode.com/posts`,
+        formData ,
+      ).then((response) => {
+        if(response.status == 201){
+          console.log(response)
+        }
+      }).catch(e => {
+        console.error(e);
+      })
+    }
+  }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $base-color: #1ec2a8;
 
 .position-relative {

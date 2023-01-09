@@ -6,7 +6,7 @@
             <confirmCodeForm />
           </div>
           <div class="col-md-6">
-            <LoginWrapper titleAuth="نسيت كلمة المرور" />
+            <LoginWrapper :titleAuth="$t('auth.resetPassword')" />
           </div>
         </div>
       </div>
