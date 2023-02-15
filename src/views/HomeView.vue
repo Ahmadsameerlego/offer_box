@@ -1,25 +1,29 @@
 <template>
+  <!-- loader  -->
+  <PageLoader  v-if="loader"/> 
 
   <!-- header -->
-  <pageHeader />
+  <pageHeader :sliders="sliders"/>
 
   <!-- parts  -->
-  <HomeParts />
+  <HomeParts :categories="categories" />
 
   <!-- new offers  -->
-  <newOffers />
+  <newOffers :latest_ads="latest_ads" />
 
   <!-- financial offers  -->
-  <financialOffers />
+  <financialOffers :paid_ads="paid_ads"/>
 
   <!-- famous stores  -->
-  <famouseStores />
+  <famouseStores :stores="stores" />
 
   <!-- home offers  -->
-  <homeOffers />
+  <homeOffers :ads="ads" />
 
   <!-- footer  -->
   <pageFooter />
+
+  
 </template>
 
 <script>
@@ -32,8 +36,29 @@ import financialOffers from '../components/home/financialOffers.vue';
 import famouseStores from '../components/home/famousStores.vue';
 import homeOffers from '../components/home/homeOffers.vue';
 import pageFooter from '../components/home/pageFooter.vue'
+
+import PageLoader from '../components/share/pageLoader.vue'
+
+
+import axios from 'axios'
+
+
 export default defineComponent({
   name: 'HomeView',
+  data(){
+    return{
+      loader : true,
+      sliders : [],
+      latest_ads : [],
+      paid_ads : [],
+      categories : [],
+      stores : [],
+      ads :[]
+    }
+  },
+  mounted(){
+    this.getHome()
+  },
 
   components: {
     pageHeader,
@@ -42,7 +67,37 @@ export default defineComponent({
     financialOffers,
     famouseStores,
     homeOffers,
-    pageFooter
+    pageFooter,
+    PageLoader
   },
+  methods:{
+    async getHome(){
+      await axios.get(`home?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&mac_address=${localStorage.getItem('macAddress')}`, {
+        headers : {
+            Authorization:  `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then( (res)=>{
+        this.sliders = res.data.data[0].sliders;
+        this.latest_ads = res.data.data[1].latest_ads;
+        this.paid_ads = res.data.data[2].paid_ads;
+        this.categories = res.data.data[3].categories;
+        this.stores = res.data.data[4].stores;
+        this.ads = res.data.data[5].ads;
+
+        this.loader = false
+
+
+      } )
+      .catch( (err)=>{
+        console.log( err )
+      } )
+    },
+
+
+
+
+  },
+
 });
 </script>

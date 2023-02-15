@@ -11,7 +11,7 @@
     <div class="follow_store">
         <button class="btn  d-flex align-items-center" :class="{ followActive }" @click="followStore()">
             <i class="fa-regular fa-bell" ></i>
-            <span >متابعة المتجر</span>
+            <span > {{ $t('store.follow') }} </span>
         </button>
     </div>
 
@@ -21,14 +21,14 @@
 
         <div class="col-md-6 mb-3">
             <div class="store_box">
-                <h6 class="labeledSection">الوصف</h6>
+                <h6 class="labeledSection"> {{ $t('store.followed') }} </h6>
                 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque nostrum nihil natus molestias nam tenetur earum modi deleniti pariatur perferendis. </p>
             </div>
         </div>
 
         <div class="col-md-6 mb-3">
             <div class="store_box">
-                <h6 class="labeledSection">الفروع</h6>
+                <h6 class="labeledSection"> {{ $t('store.branches') }} </h6>
 
                 <!-- single branch  -->
                 <div class="single_branch mt-3 mb-3 d-flex justify-content-between align-items-center">
@@ -53,7 +53,7 @@
 
         <div class="col-md-6 mb-3">
             <div class="store_box">
-                <h6 class="labeledSection">روابط المتجر</h6>
+                <h6 class="labeledSection">  {{ $t('store.storeLinks') }} </h6>
 
                 <div class="storeLinks mt-3 mb-3 d-flex justify-content-between">
                     <p>موقع المتجر</p>
@@ -65,11 +65,11 @@
 
         <div class="col-md-6 mb-3">
             <div class="store_box">
-                <h6 class="labeledSection">مواقع التواصل</h6>
+                <h6 class="labeledSection"> {{ $t('store.socialMedia') }} </h6>
 
                 <div class="contact_sites d-flex align-items-center mt-3">
                     <img :src="phone" alt="">
-                    <a href="tel:01013746111"> رقم الجوال : 01013746111 </a>
+                    <a href="tel:01013746111"> {{ $t('store.phone') }} : 01013746111 </a>
                 </div>
 
                 <div class="site_social_media d-flex justify-content-around mt-3 mb-3">
@@ -91,15 +91,16 @@
 
     <!-- parts  -->
     <section class="parts">
-        <h4 class="labeledSection">الاقسام</h4>
+        <h4 class="labeledSection"> {{ $t('store.parts') }} </h4> 
 
         <div class="row mt-5">
-            <div class="col-md-6">
-                <div class="single_part">
-                    <router-link to="/">
-                        <img :src="src1" alt="">
 
-                        <h5 class=""> هواتف </h5>
+            <div class="col-md-6" v-for="cat in cats" :key="cat.id">
+                <div class="single_part">
+                    <router-link :to="'/storeCategories/'+cat.id">
+                        <img :src="cat.catImage" alt="">
+
+                        <h5 class=""> {{ cat.catTitle }} </h5>
                     </router-link>
                 </div>
             </div>
@@ -119,7 +120,20 @@ export default {
             phone : require('../../assets/phone.png'),
             face : require('../../assets/facebook.png'),
             src1 : require('../../assets/slider1.jpg'),
-            followActive : false
+            followActive : false,
+
+            cats : [
+                {
+                    id:1, 
+                    catImage :  require('../../assets/slider1.jpg'),
+                    catTitle : ' هواتف'
+                },
+                {
+                    id:2, 
+                    catImage :  require('../../assets/slider1.jpg'),
+                    catTitle : ' هواتف'
+                },
+            ]
         }
     },
     methods:{

@@ -15,6 +15,12 @@ import HomeRegester from '../views/HomeRegester.vue';
 import OfferDescription from '../views/OfferDescription.vue';
 import NotificationPage from '../views/NotificationPage.vue';
 
+import fileredcates from '../views/filteredCategories.vue'
+import storeCats from '../views/storeCates.vue'
+import activeAcount from '../views/regActivateAcountCode.vue'
+
+// import store from '../store/index'
+
 
 
 const routes = [
@@ -46,7 +52,8 @@ const routes = [
   {
     path : '/NotificationPage',
     name : 'NotificationPage',
-    component : NotificationPage
+    component : NotificationPage,
+    meta : { requiresAuth : true }
   },
   {
     path : '/confirmCode',
@@ -66,12 +73,24 @@ const routes = [
   {
     path : '/favorites',
     name : 'favorites',
-    component : siteFavs
+    component : siteFavs,
+    meta : { requiresAuth : true }
   },
   {
     path: '/store/:id',
     name : 'store',
     component : singleStore
+  },
+  {
+    path:'/fileredcategories/:id',
+    name : 'fileredcates',
+    component : fileredcates
+  },
+  {
+    path:'/storeCategories/:id',
+    name : 'storeCategories',
+    component  : storeCats
+    
   },
   {
     path : '/profile',
@@ -93,12 +112,36 @@ const routes = [
     name : 'OfferDescription',
     component : OfferDescription
   },
+  {
+    path : '/activeAcount',
+    name : 'activeAcount',
+    component : activeAcount
+  }
 
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(){
+    scrollTo(0, 0)
+  }
+})
+
+
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (localStorage.getItem('IsLoggedIn') === 'false') {
+      next({ name: 'HomeLogin' })
+    } else {
+      next() // go to wherever I'm going
+    }
+  } else {
+    next() // does not require auth, make sure to always call next()!
+  }
 })
 
 export default router

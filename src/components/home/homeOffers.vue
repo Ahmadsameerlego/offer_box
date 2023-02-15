@@ -9,29 +9,31 @@
     </div>
 
     <section class="mt-4">
-        <div class="col-md-4">
-            <!-- single new offer  -->
-            <router-link to="/">
-                <div class="singleNewOffer">
+        <div class="row">
+            <div class="col-md-4" v-for="offer in ads" :key="offer.id">
+                <!-- single new offer  -->
+                <router-link :to="'/OfferDescription/'+offer.id">
+                    <div class="singleNewOffer">
 
-                    <!-- offer image  -->
-                    <img :src="src" alt="new offer image" class="newOfferImage">
+                        <!-- offer image  -->
+                        <img :src="offer.src" alt="new offer image" class="newOfferImage">
 
-                    <!-- store name -->
-                    <div class="storeName">
-                        <h5>اسم المتجر</h5>
-                        <h6>اسم الاعلان</h6>
+                        <!-- store name -->
+                        <div class="storeName">
+                            <h5> {{ offer.store_name }} </h5>
+                            <h6>{{ offer.name }}</h6>
+                        </div>
+
+                        <!-- time -->
+                        <span class="offerTime">{{ offer.created_at }}</span>
+
+                        <!-- category  -->
+                        <span class="offerCate"> {{ offer.menu_name }} </span>
+
                     </div>
-
-                    <!-- time -->
-                    <span class="offerTime">منذ 1 ساعة</span>
-
-                    <!-- category  -->
-                    <span class="offerCate"> الكترونيات </span>
-
-                </div>
-            </router-link>
-        </div>
+                </router-link>
+            </div>
+        </div>  
     </section>
   </div>
 </template>
@@ -41,7 +43,11 @@ export default {
     data(){
         return{
             src : require('../../assets/slider1.jpg'),
+
         }
+    },
+    props:{
+        ads : Array
     }
 }
 </script>

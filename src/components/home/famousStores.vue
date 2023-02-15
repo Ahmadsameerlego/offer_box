@@ -4,34 +4,39 @@
         <div class="d-flex justify-content-between">
             <h5 class="labeledSection fw-bold"> {{ $t('home.famousStore') }} </h5>
 
-            <router-link to="/" >
+            <router-link to="/stores" >
                 <h6 class="allStores"> {{ $t('home.allStores') }} </h6>
             </router-link>
         </div>
 
         <section class="stores mt-4">
             <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
+                <div class="col-lg-3 col-md-6 mb-4" v-for="store in stores" :key="store.id">
 
                     <!-- single store  -->
                     <div class="single_store">
                         <!-- store image -->
                         <div class="store_image">
-                            <img :src="src" alt="">
+                            <img :src="store.icon" alt="">
                         </div>
                          
-                         <h5 class="fw-bold"> اسم المتجر </h5>
+                         <h5 class="fw-bold"> {{ store.name }} </h5>
 
                          <p class="storeLocation d-flex justify-content-start align-items-center"> 
                             <img :src="locaImage" alt="">
-                            <span> شارع الصندوق الاسود , الرياض </span>
+                            <span> {{ store.address }} </span>
                         </p>
 
-                        <router-link to="/" class="button d-flex mx-auto w-75"> {{ $t('home.showStore') }} </router-link>
+                        <router-link :to="'/store/'+store.id" class="button d-flex mx-auto w-75"> {{ $t('home.showStore') }} </router-link>
 
-                        <div class="store_status">
+                        <div class="store_status" v-if="store.is_open==true">
                             <span class="status"></span>
-                            <p>مفتوح</p>
+                            <p> {{$t('common.open')}} </p>
+                        </div>
+
+                        <div class="store_status " v-else>
+                            <span class="status close" style="background:red"></span>
+                            <p> {{$t('common.close')}} </p>
                         </div>
                     </div>
 
@@ -45,9 +50,97 @@
 export default {
     data(){
         return{
-            src :  require('../../assets/storeLogo.png'),
-            locaImage : require('../../assets/loca.png')
+            // src :  require('../../assets/storeLogo.png'),
+            locaImage : require('../../assets/loca.png'),
+            // array to get all famous stores => will call the api 
+            famousStores : [
+                {
+                    id : 1, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 2, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 3, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 4, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 5, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 6, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 6, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 6, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 6, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 6, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+                {
+                    id : 6, 
+                    src :  require('../../assets/storeLogo.png'),
+                    storeName : 'اسم المتجر',
+                    storeAddress : 'شارع الصندوق الاسود , الرياض',
+                    status : 'مفتوح'
+                },
+
+            ],
+            
         }
+    },
+    created(){
+        this.famousStores = this.famousStores.slice(0,8)
+    },
+    props:{
+        stores : Array
     }
 }
 </script>

@@ -74,24 +74,31 @@ export default {
 
       formData.append('code', otpsNumber);
 
-      formData.append('phone', localStorage.getItem('phone'))
 
       console.log(otpsNumber);
       await axios.post(
-        `password/reset-activation`,
-        formData ,
+        `account/activation`,formData,{
+            headers : {
+                Authorization:  `Bearer ${localStorage.getItem('token')}`
+            }
+        },
+        
       ).then((response) => {
         if(response.status == 200 && response.data.key == "success"){
           this.$swal({
               icon: 'success',
               title: response.data.msg,
+              timer:2000,
+              showConfirmButton: false,
           });
 
-          this.$router.push('/confirmPassword')
+          this.$router.push('/')
         }else{
           this.$swal({
               icon: 'error',
               title: response.data.msg,
+              timer:2000,
+              showConfirmButton: false,
           });
         }
 

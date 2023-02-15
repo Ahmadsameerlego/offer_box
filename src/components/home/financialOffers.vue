@@ -6,30 +6,36 @@
             :pagination="{
             clickable: true,
             }"
+            :autoplay="{
+                delay: 2500,
+                disableOnInteraction: false,
+            }"
             :modules="modules"
             class="mySwiper mt-4"
         >
 
-            <swiper-slide  class="swiperSlide">
-                <!-- single new offer  -->
-                <div class="singleNewOffer">
+            <swiper-slide  class="swiperSlide" v-for="offer in paid_ads" :key="offer.id">
+                <router-link :to="'/OfferDescription/'+offer.id">
+                    <!-- single new offer  -->
+                    <div class="singleNewOffer">
 
-                    <!-- offer image  -->
-                    <img :src="src" alt="new offer image" class="newOfferImage">
+                        <!-- offer image  -->
+                        <img :src="offer.src" alt="new offer image" class="newOfferImage">
 
-                    <!-- store name -->
-                    <div class="storeName">
-                        <h5>اسم المتجر</h5>
-                        <h6>اسم الاعلان</h6>
+                        <!-- store name -->
+                        <div class="storeName">
+                            <h5>{{ offer.store_name }}</h5>
+                            <h6> {{ offer.name }} </h6>
+                        </div>
+
+                        <!-- time -->
+                        <span class="offerTime"> {{ offer.created_at }} </span>
+
+                        <!-- category  -->
+                        <span class="offerCate"> {{ offer.menu_name }} </span>
+
                     </div>
-
-                    <!-- time -->
-                    <span class="offerTime">منذ 1 ساعة</span>
-
-                    <!-- category  -->
-                    <span class="offerCate"> الكترونيات </span>
-
-                </div>
+                </router-link>
             </swiper-slide>
         </swiper>
 
@@ -47,13 +53,13 @@ import "swiper/css/pagination";
 
 
 // import required modules
-import { Pagination } from "swiper";
+import { Autoplay ,Pagination } from "swiper";
 
 export default {
     data(){
         return{
-            src : require('../../assets/slider1.jpg'),
-            finanOffers : []
+            // src : require('../../assets/slider1.jpg'),
+
         }
     },
     components: {
@@ -62,9 +68,12 @@ export default {
     },
     setup() {
         return {
-            modules: [Pagination],
+            modules: [Pagination, Autoplay],
         };
     },
+    props : {
+        paid_ads : Array
+    }
 }
 </script>
 

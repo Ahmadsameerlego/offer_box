@@ -5,10 +5,10 @@
         <div class="container">
 
             <!-- slider  -->
-            <PageSlider />
+            <PageSlider :sliders="sliders" />
 
             <!-- nav bar  -->
-            <section class="NavBar pt-4 mb-5 d-flex justify-content-between align-items-baseline">
+            <section class="NavBar pt-4 mb-5 d-flex justify-content-between align-items-center  ">
 
               <!-- toggle navbar -->
               <div class="hamburger" @click="toggleNav()" ref="hamburgar">
@@ -40,7 +40,7 @@
                     </li>
 
                     <li class="nav-item">
-                      <router-link to="/favorites" class="nav-link"  :class="{ active : $route.path === '/favorites' }"> {{  $t('nav.favs')}} </router-link>
+                      <router-link to="/favorites" class="nav-link" @click="loginAlert()"  :class="{ active : $route.path === '/favorites' }"> {{  $t('nav.favs')}} </router-link>
                     </li>
 
                     <li class="nav-item">
@@ -57,28 +57,31 @@
                 </div>
               </nav>
 
-              <!-- user icons  -->
-              <div class="userAction d-flex">
+              <section class="userGrouped d-flex justify-content-between">
 
-                <!-- location  -->
-                
+                <!-- user icons  -->
+                <div class="userAction d-flex">
 
-                <googleMap />
+                  <!-- location  -->
+                  
 
-                <!-- alerts  -->
-                <router-link to="/NotificationPage" class="alert_Icon">
-                  <i class="fa-solid fa-bell"></i>
-                  <span class="alert_cont">10</span>
-                </router-link>
+                  <googleMap @update:latLng="getClientInfo" />
 
-              </div>
+                  <!-- alerts  -->
+                  <router-link to="/NotificationPage" class="alert_Icon" @click="loginAlert()">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="alert_cont" v-if="user"> {{ noti_count }} </span>
+                    <span class="alert_cont" v-else> 0</span>
+                  </router-link>
+
+                </div>
 
                 <!-- profile dropdown  -->
-                <div class="dropdown">
+                <div class="dropdown" v-if="user">
                   <button class="btn dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     
                     <img :src="src" alt="profile">
-                    <span>احمد سمير</span>
+                    <span> {{ username }} </span>
                     <i class="fa-solid fa-chevron-down"></i>
 
                   </button>
@@ -94,15 +97,21 @@
                     </li>
 
                     <li>
-                      <router-link class="dropdown-item" :to="{name:'HomeLogin'}">
+                      <button class="dropdown-item btn" @click="signOut()" style="color:#333">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>{{  $t('nav.logout')}}</span>
-                      </router-link>
+                      </button>
 
                     </li>
 
                   </ul>
                 </div>
+
+                <div v-else> 
+                  <router-link to="/HomeLogin" class="login"> {{ $t('auth.login') }} </router-link>
+                </div>
+
+              </section>
               
             </section>
 
@@ -130,7 +139,8 @@
 
 <script>
 import PageSlider from './PageSlider.vue';
-import googleMap from './googleMap.vue'
+import googleMap from './googleMap.vue';
+import axios from 'axios'
 export default {
     data(){
       return{
@@ -138,7 +148,11 @@ export default {
         items: ['foo', 'bar', 'fizz', 'buzz'],
         value: null,
         dialog: false,
-
+        latLng : { lat : 0 , lng : 0},
+        user : {},
+        username : '',
+        noti_count  : null,
+        loginSwitch : ''
     }
     },
     components:{
@@ -146,6 +160,7 @@ export default {
       googleMap,
     },
     methods:{
+
       toggleNav(){
 
         const hamburger = this.$refs.hamburgar;
@@ -162,8 +177,118 @@ export default {
         //Hamburger Animation
         hamburger.classList.toggle("toggle");
 
-      }    
+      },
+
+      // get user lat and lng 
+      getClientInfo(latLng){
+        this.latLng = latLng
+      },
+
+      // logout 
+      async signOut(){
+        await axios.post('logout', {
+          device_id : localStorage.getItem('keyForMacAndID')
+        },{
+          headers : {
+                Authorization:  `Bearer ${localStorage.getItem('token')}`
+          }
+        } 
+        
+        )
+        .then( (res)=>{
+          if( res.data.code == 200 && res.data.key == "success" ){
+            this.$swal({
+              icon: 'success',
+              title: res.data.msg,
+              timer : 2000
+            });
+              localStorage.removeItem('user');
+
+              localStorage.removeItem('token');
+
+              this.$router.push('/HomeLogin');
+
+              localStorage.setItem('IsLoggedIn', false);
+
+          }else{
+            this.$swal({
+              icon: 'error',
+              title: res.data.msg,
+              timer : 2000
+            });
+          }
+        } )
+      },
+
+      // get notification count 
+      async getNotUnSee(){
+        await axios.get('unseen-notifications-count',{
+          headers : {
+                Authorization:  `Bearer ${localStorage.getItem('token')}`
+          }
+        } 
+        
+        )
+        .then( (res)=>{
+          this.noti_count = res.data.data.num_not_seen_notifications
+        } )
+        .catch( ()=>{
+          this.noti_count = 0
+        } )
+      },
+
+      // login alert if not login 
+      loginAlert(){
+        // let isLoggedIn = localStorage.getItem('IsLoggedIn')
+        if( this.isLoggedIn  === 'false' ){
+          this.$swal({
+              icon: 'error',
+              title: this.$t('common.pleaseLogin'),
+              timer: 2000,
+              showConfirmButton: false,
+          });
+          // console.log('dfghj');
+          //         console.log(this.isLoggedIn);
+
+        }
+
+        
+      }
+      
+    },
+
+    computed:{
+      isLoggedIn() {
+        return localStorage.getItem('IsLoggedIn')
+      }
+
+    },
+
+
+    updated(){
+      this.getClientInfo(),
+      this.getNotUnSee()
+    },
+    created(){
+      this.user = localStorage.getItem('user');
+      if(this.user){
+        this.username = JSON.parse(localStorage.getItem('user')).name.split(' ')[0]
+      }else{
+        return null
+      }
+
+      console.log(this.username)
+    },
+    props:{
+      sliders : Array
     }
+
+    // mounted(){
+    // },
+    
+
+
+
 
 
     
@@ -176,6 +301,9 @@ $base-color: #1ec2a8;
 header{
   position: relative;
   height: 47vh;
+  .dropdown-toggle{
+    padding: 0;
+  }
   .NavBar{
     background-color: $base-color;
     #logo{
@@ -212,6 +340,7 @@ header{
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin : 0 25px;
       button{
         box-shadow: none;
       }
@@ -298,9 +427,9 @@ header{
 
   /*Styling Hamburger Icon*/
   .hamburger div {
-      width: 30px;
+      width: 25px;
       height: 3px;
-      background: var(--main_color);
+      background: #197776;
       margin: 5px;
       transition: all 0.3s ease;
   }
@@ -328,17 +457,35 @@ header{
 
 <!-- responsive --> 
 <style scoped>
+.login{
+    color: white;
+    z-index: 99;
+    position: relative;
+    font-size: 18px;
+    margin:0 12px;
+}
 @media( max-width : 991.98px ){
+    .userGrouped{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 9;
+      width:100%;
+      background-color: #1ec2a8;
+      padding: 5px 0;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+    }
+    header .NavBar #logo img{
+      width: 85px;
+      height:85px; 
+    }
    .hamburger{
         display: block;
         position: relative;
         cursor: pointer;
-        right: 0%;
-        top: 12%;
-        transform: translate(-5%, -50%);
         z-index: 4;
         transition: all 0.7s ease;
-        margin-top: 20px;
     }
     .navSmallScreen{
         position: fixed;
@@ -356,6 +503,9 @@ header{
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .navbar-nav{
+      flex-direction: column !important;      
     }
     .navSmallScreen.open{
         clip-path: circle(1000px at 90% -10%);

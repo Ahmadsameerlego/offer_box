@@ -20,8 +20,8 @@
             class="default_input"
             type="text"
             required=""
-            name="userName"
-            v-modal="userName"
+            name="name"
+            v-modal="name"
             placeholder="{{ $t('auth.insert') }} {{ $t('auth.userName') }}"
           />
           <label class="float__label" for="">{{ $t('auth.insert') }} {{ $t('auth.userName') }}</label>
@@ -55,7 +55,7 @@
               src="../../assets/noun_mobile.png"
             ></v-img>
           </span>
-          <v-select :items="items" solo name="countryCode" v-model="countryCode"></v-select>
+          <v-select :items="items" solo name="country_key" v-model="country_key"></v-select>
         </div>
       </div>
 
@@ -97,8 +97,8 @@
           <input
             class="default_input"
             :type="typePassConfrm" 
-            v-model="confirmPassword"
-            name="confirmPassword"
+            v-model="password_confirmation"
+            name="password_confirmation"
             required=""
             placeholder="{{ $t('auth.insert') }} {{ $t('auth.confirmPassword') }}"
           />
@@ -125,7 +125,7 @@
         </div>
       </div>
       <div class="mt-3 mb-3 d-flex justify-content-center">
-        <button class="main_btn up" color="#1ec2a8" elevation="0" x-large>
+        <button class="main_btn up" color="#1ec2a8" elevation="0" x-large :disabled="disabled">
           {{ $t('auth.signup') }}
         </button>
       </div>
@@ -144,14 +144,16 @@ import axios from 'axios';
 
 export default {
   data: () => ({
-    items: ["+996", "+20", "565", "+10"],
+    items: [],
     userName: "",
     phone: "",
-    countryCode: "",
+    country_key: null ,
     password: "",
     confirmPassword: "",
     typePass: "password",
     typePassConfrm: "password",
+    website : true,
+    disabled : false,
   }),
   methods: {
     showPassword() {
@@ -161,19 +163,86 @@ export default {
       this.typePassConfrm = this.typePassConfrm === "password" ? "text" : "password";
     },
     async submitForm(){
+
+
+      this.disabled = true
+
       const formData = new FormData(this.$refs.regestForm)
+      formData.append('website', this.website)
+      formData.append('device_type', 'android')
+      formData.append('device_id', localStorage.getItem('keyForMacAndID'))
       await axios.post(
-        `https://jsonplaceholder.typicode.com/posts`,
+        `/register`,
         formData ,
       ).then((response) => {
-        if(response.status == 201){
-          console.log(response)
+
+        // if response is success
+        if(response.status == 200 && response.data.key == "needActive"){
+          this.$swal({
+              icon: 'success',
+              title: response.data.msg,
+              timer : 2000,
+              showConfirmButton: false,
+
+          });
+
+          this.$router.push('/activeAcount')
+
+          let user = JSON.stringify(response.data.data.user)
+          localStorage.setItem('token' , response.data.data.token);
+          localStorage.setItem('user' , user);
+
+          localStorage.setItem('IsLoggedIn', true);
+        }else{
+          this.$swal({
+              icon: 'error',
+              title: response.data.msg,
+              timer : 2000,
+              showConfirmButton: false,  
+          });
         }
+        this.disabled = false
+
       }).catch(e => {
         console.error(e);
       })
-    }
+    },
+    // get countryCode 
+    async getCountriesCode(){
+       await axios.get('countries')
+      .then( (response)=>{
+        // this.items = response.data.data.countries;
+
+
+        for( let i = 0 ; i < response.data.data.countries.length ; i++){
+          this.items.push(response.data.data.countries[i].calling_code)
+
+          // console.log(this.items)
+        }
+
+      } )
+    },
   },
+  mounted(){
+    this.getCountriesCode();
+
+    // get old value if exist
+    let UUID = localStorage.getItem('keyForMacAndID');
+    if( UUID == null ){
+      let randomID = Math.floor(Math.random()*100000);
+      localStorage.setItem('keyForMacAndID' , randomID)
+      UUID = localStorage.getItem('keyForMacAndID')
+    }
+
+    // get old value if exist
+    let macAddress = localStorage.getItem('macAddress');
+    if( macAddress == null ){
+      let randomID = Math.floor(Math.random()*100000);
+      localStorage.setItem('macAddress' , randomID)
+      macAddress = localStorage.getItem('macAddress')
+    }
+
+  }
 };
 </script>
 

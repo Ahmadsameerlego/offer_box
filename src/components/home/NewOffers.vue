@@ -6,35 +6,34 @@
 
             <div class="row">
 
-                <router-link to="/"> 
-                    <div class="col-md-4 mb-3">
-                    
+                    <div class="col-md-4 mb-3" v-for="offer in latest_ads" :key="offer.id">
+                        <router-link :to="'/OfferDescription/'+offer.id"> 
                         <!-- single new offer  -->
                         <div class="singleNewOffer">
 
                             <!-- offer image  -->
-                            <img :src="src" alt="new offer image" class="newOfferImage">
+                            <img :src="offer.image" alt="new offer image" class="newOfferImage">
 
                             <!-- store name -->
                             <div class="storeName">
-                                <h5>اسم المتجر</h5>
-                                <h6>اسم الاعلان</h6>
+                                <h5> {{ offer.store_name }} </h5>
+                                <h6>{{ offer.name }}</h6>
                             </div>
 
                             <!-- time -->
-                            <span class="offerTime">منذ 1 ساعة</span>
+                            <span class="offerTime">{{ offer.created_at }}</span>
 
                             <!-- category  -->
-                            <span class="offerCate"> الكترونيات </span>
+                            <span class="offerCate"> {{ offer.menu_name }} </span>
 
                         </div>
+                        </router-link>
 
                     </div>
-                </router-link>
 
             </div>
 
-            <router-link to="/" class="button d-flex justify-content-center align-items-center"> {{ $t('common.more') }} </router-link>
+            <router-link to="/offers" class="button d-flex justify-content-center align-items-center"> {{ $t('common.more') }} </router-link>
         </section>
   </div>
 </template>
@@ -44,13 +43,19 @@ export default {
     data(){
         return{
             src : require('../../assets/slider1.jpg'),
-            newOffers : [],
+            // array will come from api 
+
+            // array will show only 6 items if it doesnot comming from api
             offerImage : null,
             storeName : '',
             offerName : '',
             offerTime : '',
             offerCategory : ''
         }
+    },
+
+    props:{
+        latest_ads : Array
     }
 }
 </script>

@@ -14,7 +14,7 @@
         class="mySwiper"
     >
         <swiper-slide v-for="slider in sliders" :key="slider">
-            <img :src="slider" alt="slider image">
+            <img :src="slider.image" alt="slider image">
         </swiper-slide>
 
     <div class="overlay"></div>
@@ -36,12 +36,12 @@ import { Autoplay, Pagination , EffectFade} from "swiper";
 export default {
     data(){
         return{
-            sliders : [
-                require('../../assets/slider1.jpg'),
-                require('../../assets/slider2.jpeg'),
-                require('../../assets/slider3.jpg'),
+            // sliders : [
+            //     require('../../assets/slider1.jpg'),
+            //     require('../../assets/slider2.jpeg'),
+            //     require('../../assets/slider3.jpg'),
 
-            ]
+            // ]
         }
     },
     components: {
@@ -53,6 +53,9 @@ export default {
         modules: [Autoplay, Pagination , EffectFade],
         };
     },
+    props:{
+        sliders : Array
+    }
 }
 </script>
 

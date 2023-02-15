@@ -4,36 +4,36 @@
         <h6 class="labeledSection fw-bold mb-3"> {{  $t('nav.contact')}}   </h6>
 
 
-        <form action="" class="contactForm mt-4">
+        <form ref="contactForm" class="contactForm mt-4" @submit.prevent="contactForm()">
 
             <div class="form-group mb-3">
                 <label for="username"> {{ $t('contact.name') }} </label>
-                <input type="text" id="username" class="form-control" :placeholder="$t('contact.nameplc')">
+                <input required type="text" id="username" class="form-control" :placeholder="$t('contact.nameplc')" v-model="name" name="name">
             </div>
 
             <div class="form-group mb-3">
-                <label for="email"> {{ $t('contact.mail') }} </label>
-                <input type="email" id="email" class="form-control" :placeholder="$t('contact.mailplc')">
+                <label for="phone"> {{ $t('contact.phone') }} </label>
+                    <div class="d-flex position-relative">
+                        <input required type="number" id="phone" class="form-control" :placeholder="$t('contact.phoneplc')" v-model="phone" name="phone">
+                        <v-select  :items="items" v-model="country_key" name="country_key" class="position-absolute" style="left:0"></v-select>
+                    </div>
+                    
+
             </div>
 
             <div class="form-group mb-3">
-                <label for=""> {{ $t('contact.spec') }} </label>
-                <select class="form-select">
-                    <option selected hidden disabled> {{$t('contact.selcspec')}} </option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                </select>
-
-                
+                <label for="subject"> {{ $t('contact.subject') }} </label>
+                <input required type="text" id="subject" class="form-control" :placeholder="$t('contact.subject')" v-model="subject" name="subject">
             </div>
+            
 
             <div class="form-group mb-3">
                 <label for=""> {{ $t('contact.message') }} </label>
-                <textarea :placeholder="$t('contact.messageplc')" class="form-control"></textarea>
+                <textarea required :placeholder="$t('contact.messageplc')" class="form-control" v-model="message" name="message"></textarea>
             </div>
 
             <div class="d-flex justify-center mx-auto">
-                <button class="main_btn up"> {{$t('contact.send')}} </button>
+                <button class="main_btn up" :disabled="disabled"> {{$t('contact.send')}} </button>
             </div>
         </form>
     </div>
@@ -41,8 +41,54 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    data(){
+        return{
+            disabled : false,
+            items : [],
+            country_key : null
+        }
+    },
+    methods:{
+        async contactForm(){
+            this.disabled = true
+            await axios.post(  'contact-us', this.$refs.contactForm )
+            .then( (res)=>{
+                if( res.data.key=="success" && res.data.code== 200 ){
+                    this.$swal({
+                        icon: 'success',
+                        title: res.data.msg,
+                        timer : 2000
+                    });
+                }else{
+                    this.$swal({
+                        icon: 'error',
+                        title: res.data.msg,
+                        timer : 2000
+                    });
+                }
 
+                this.disabled = false
+            } )
+            .catch( (err)=>{
+                console.err(err)
+            } )
+        },
+        // get countryCode 
+        async getCountriesCode(){
+        await axios.get('countries')
+        .then( (response)=>{
+            // this.items = response.data.data.countries;
+            for( let i = 0 ; i < response.data.data.countries.length ; i++){
+                this.items.push(response.data.data.countries[i].calling_code)
+            }
+        } )
+        },
+    },
+    mounted(){
+        this.getCountriesCode()
+    }
 }
 </script>
 

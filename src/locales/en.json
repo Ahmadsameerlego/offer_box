@@ -49,7 +49,9 @@
       "selcspec" : "please, enter your filed",
       "message" : "message",
       "messageplc" : "leave your message",
-      "send" : "send"
+      "send" : "send",
+      "subject" : "message subject"
+
     },
     "profile" : {
       "personal" : "Personal Profile",
@@ -58,13 +60,49 @@
       "howWork" : "How Site Works ?",
       "alertSet" : "Alerts Settings",
       "commionQues" : "Common Questions",
-      "siteLang" : "Site Language"
+      "siteLang" : "Site Language",
+
+      "username" : "Username",
+      "phone" : "Phone",
+      "password" : "Password",
+      "confirmPass" : "Confirm Password",
+      "save" : "Save",
+      "enterUser" : "please, enter username",
+      "enterPhone" : "please, enter phone",
+      "enterPass" : "please, enter password",
+      "enterConfirm" : "please , confirm password",
+
+
+      "alertSetting" : "advertisements , offers and more",
+      "ads" : "Advertisements",
+      "welcome" : "Welcome",
+      "chooseLang" : "please , select the language that you want",
+      "arabic" : "Arabic",
+      "english" : "English",
+      "changePassword" : "change password",
+      "pleaseChange" : "please , change password",
+      "currentPass" : "current password",
+      "newPassword" : "new password",
+      "sendActiveCode" : "please , sent activation code sent to your phone",
+      "deleteAccount" : "delete account",
+      "deleteAcc" : "Delete",
+      "revenge" : "GoBack",
+      "deleteAccTitle"  : "Delete Account",
+      "deleteAccEnsure"  : "Are You Sure That You Want To Delete Your Account"
+
+
     },
     "common" : 
     {
       "more" : "More",
       "appStats" : "App Statistics",
-      "statisText" : "we show the statistics of offer box app"
+      "statisText" : "we show the statistics of offer box app",
+      "notFound" : "No Data Found",
+      "open" : "open",
+      "close" : "close",
+      "pleaseLogin" : "please , login first"
+
+
     },
     "offers" : 
     {
@@ -90,5 +128,16 @@
       "confirm" : "confirm",
       "dataConfirm" : "Please enter the verification code sent to your mobile",
       "resetPassword" : "Reset Password"
+
+    },
+    "store":{
+      "follow" : "Follow the store",
+      "followed" : "Followed",
+      "desc" : "description",
+      "branches" : "branches",
+      "storeLinks" : "store links",
+      "socialMedia" : "social media",
+      "parts" : "Categories",
+      "phone" : "phone"
     }
 }

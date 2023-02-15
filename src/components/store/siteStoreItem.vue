@@ -1,5 +1,5 @@
 <template>
-  <section id="stores" class="mt-5 mb-5" v-if="selectedStores.length>0">
+  <section id="stores" class="mt-5 mb-5" v-if="selectedStores.length>1">
     <div class="container">
       <h5 class="labeledSection fw-bold"> {{ $t('nav.stores') }} </h5>
 
@@ -267,7 +267,7 @@ export default {
 
 
         async getStores(){
-          await axios.get(`nearstores?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&page=${this.currentPage}&category=${this.$route.query.slug}`)
+          await axios.get(`nearstores?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&page=${this.currentPage}`)
           .then( (res)=>{
             this.stores = res.data.data.stores
             this.totalPages = res.data.data.pagination.total_pages

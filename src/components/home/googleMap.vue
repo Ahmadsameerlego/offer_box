@@ -57,6 +57,8 @@ export default {
     data(){
         return{
             dialog: false,
+            // lat : 0,
+            // long : 0,
         }
     },
     components:{
@@ -74,18 +76,25 @@ export default {
         navigator.geolocation.getCurrentPosition((position) => {
           this.center = {
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
           };
           this.markerOptions = { position : this.center, label: 'L', title: 'Your Location' }
+
+          localStorage.setItem('lat',this.center.lat );
+          localStorage.setItem('lng',this.center.lng );
         });
-      }
+      },
 
     },
 
     mounted(){
+    },
+    updated(){      
       this.geolocation();
+      console.log(this.center.lat)
+      console.log(this.center.lng)
     }
-}
+  }
 </script>
 
 <style scoped>

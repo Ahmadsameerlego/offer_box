@@ -7,10 +7,10 @@
             <h6 class="labeledSection  mb-4"> {{ $t('footer.about') }} </h6>
 
             <div class="main_links d-flex flex-column mt-3">
-              <router-link to="/"> {{ $t('footer.WhoWe') }} </router-link>
-              <router-link to="/"> {{ $t('footer.conditions') }} </router-link>
-              <router-link to="/"> {{ $t('footer.commonQues') }} </router-link>
-              <router-link to="/"> {{ $t('footer.contactUS') }} </router-link>
+              <router-link to="/about-us"> {{ $t('footer.WhoWe') }} </router-link>
+              <router-link to="/profile"> {{ $t('footer.conditions') }} </router-link>
+              <router-link to="/profile"> {{ $t('footer.commonQues') }} </router-link>
+              <router-link to="/ContactUs"> {{ $t('footer.contactUS') }} </router-link>
             </div>
         </div>
 

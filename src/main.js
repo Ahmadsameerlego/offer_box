@@ -4,14 +4,24 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
-import Vuelidate from 'vuelidate'
+import Vuelidate from 'vuelidate';
+import './firebase'
+
+import Toaster from '@meforma/vue-toaster';
+
+
+// import '../public/firebase-messaging-sw'
+
+
 
 loadFonts();
+
 
 // import bootstrap 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'normalize.css'
+
 
 // import fontawesome 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
@@ -25,19 +35,38 @@ dom.watch();
 
 // import axios 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'https://offbx.com/api/'
+axios.defaults.headers.common['Authorization'] =  `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.headers.lang = localStorage.getItem('locale');
+
 
 // import i18n 
 import VueI18n from 'vue-i18n'
 import i18n from './i18n'
 
 
+// import sweetalert 
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
+// import pagination
+import Paginate from "vuejs-paginate-next";
+
+import { createHead } from "unhead"
+// Create a global head instance
+const head = createHead()
+
 
 createApp(App)
   .use(router)
+  .use(VueSweetalert2)
   .use(store)
   .use(vuetify)
   .use(Vuelidate)
   .use(i18n).use(VueI18n)
+  .use(head)  
+  .use(Toaster)
   .component("font-awesome-icon", FontAwesomeIcon)
+  .use(Paginate)
   .mount('#app')

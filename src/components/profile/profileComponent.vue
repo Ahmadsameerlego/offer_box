@@ -1,134 +1,9 @@
 <template>
-    <section class="accordion mt-4">
-        <!-- single accordion => الملف الشخصي -->
-        <div class="accordion-item mb-3">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <div class="d-flex align-items-center">
-                    <!-- accordion header icon -->
-                    <img :src="src" alt="" class="accHeaderIcon">
-                    <h5 class="fw-bold"> {{ $t('profile.personal') }} </h5>
-                </div>
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
+    <section class="accordion mt-4" id="accordionExample">
+        
 
-                    <!-- start personal form  -->
-                    <form action="" id="personalInfoForm" class=" mt-5">
-
-
-
-                    <!-- username  -->
-                    <div class="mt-3 mb-3">
-                        <h6 class="fontBold mb-0">اسم المستخدم</h6>
-                        <div class="form__label">
-                        <input
-                            class="default_input"
-                            type="text"
-                            required=""
-                            placeholder="الرجاء إدخال اسم المستخدم"
-                        />
-                        <label class="float__label" for="">الرجاء إدخال اسم المستخدم</label>
-                        <span class="icon-input">
-                            <i class="fa-solid fa-user"></i>
-                        </span>
-                        </div>
-                    </div>
-
-                    <!-- phone  -->
-                    <div class="mt-3 mb-3">
-                        <h6 class="fontBold mb-0">رقم الجوال</h6>
-                        <div class="form__label">
-                        <input
-                            class="default_input"
-                            type="number"
-                            required=""
-                            placeholder="الرجاء إدخال رقم الجوال"
-                        />
-                        <label class="float__label" for="">الرجاء إدخال رقم الجوال</label>
-                        <span class="icon-input">
-                            <v-img
-                            lazy-src="../../assets/noun_mobile.png"
-                            height="25"
-                            width="25"
-                            src="../../assets/noun_mobile.png"
-                            ></v-img>
-                        </span>
-                        <v-select :items="items" solo></v-select>
-                        </div>
-                    </div>
-
-                    <!-- password  -->
-                    <div class="mt-3 mb-3">
-                        <h6 class="fontBold mb-0">كلمة المرور</h6>
-                        <div class="form__label">
-                        <input
-                            class="default_input"
-                            type="password"
-                            required=""
-                            placeholder="الرجاء إدخال كلمة المرور"
-                        />
-                        <label class="float__label" for="">الرجاء إدخال كلمة المرور</label>
-                        <span class="icon-input">
-                            <v-img
-                            lazy-src="../../assets/Unlock.png"
-                            height="25"
-                            width="25"
-                            src="../../assets/Unlock.png"
-                            ></v-img>
-                        </span>
-                        <v-btn class="float_btn" color="white" elevation="0" small
-                            ><v-img
-                            lazy-src="../../assets/eye-close.png"
-                            height="25"
-                            width="25"
-                            src="../../assets/eye-close.png"
-                            ></v-img>
-                        </v-btn>
-                        </div>
-                    </div>
-
-                    <!-- confirm  password  -->
-                    <div class="mt-3 mb-3">
-                        <h6 class="fontBold mb-0">تأكيد كلمة المرور</h6>
-                        <div class="form__label">
-                        <input
-                            class="default_input"
-                            type="password"
-                            required=""
-                            placeholder="الرجاء تأكيد كلمة المرور"
-                        />
-                        <label class="float__label" for="">الرجاء تأكيد كلمة المرور</label>
-                        <span class="icon-input">
-                            <v-img
-                            lazy-src="../../assets/Unlock.png"
-                            height="25"
-                            width="25"
-                            src="../../assets/Unlock.png"
-                            ></v-img>
-                        </span>
-                        <v-btn class="float_btn" color="white" elevation="0" small
-                            ><v-img
-                            lazy-src="../../assets/eye-close.png"
-                            height="25"
-                            width="25"
-                            src="../../assets/eye-close.png"
-                            ></v-img>
-                        </v-btn>
-                        </div>
-                    </div>
-
-                    <!-- save  -->
-                    <div class="d-flex justify-content-center mx-auto mt-3 mb-5">
-                        <button class="main_btn up"> حفظ </button>
-                    </div>
-                    </form>
-                    <!-- end personal form  -->
-
-                </div>
-            </div>
-        </div>
+        <!-- الملف الشخصي  -->
+        <personalProfile />
 
         <!-- single accordion => سياسة الخصوصية -->
         <div class="accordion-item mb-3">
@@ -147,7 +22,7 @@
             <div class="aboutImage">
 
                 <p class="fw-6 aboutP w-75 mx-auto">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo libero recusandae, minima atque eveniet consequuntur ex similique dolorum ipsa voluptatum aspernatur, explicabo doloribus quas nihil eum dolore temporibus, expedita rerum. Ab ea dolores facere non optio asperiores officiis. Accusantium nam nobis, aliquid facere est cupiditate quasi sed quia! Possimus!
+                    {{policy}}
                 </p>
             </div>
 
@@ -173,7 +48,7 @@
             <div class="aboutImage">
 
                 <p class="fw-6 aboutP mx-auto w-75">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo libero recusandae, minima atque eveniet consequuntur ex similique dolorum ipsa voluptatum aspernatur, explicabo doloribus quas nihil eum dolore temporibus, expedita rerum. Ab ea dolores facere non optio asperiores officiis. Accusantium nam nobis, aliquid facere est cupiditate quasi sed quia! Possimus!
+                    {{terms}}
                 </p>
             </div>
 
@@ -199,7 +74,7 @@
             <div class="aboutImage">
 
                 <p class="fw-6 aboutP mx-auto w-75">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo libero recusandae, minima atque eveniet consequuntur ex similique dolorum ipsa voluptatum aspernatur, explicabo doloribus quas nihil eum dolore temporibus, expedita rerum. Ab ea dolores facere non optio asperiores officiis. Accusantium nam nobis, aliquid facere est cupiditate quasi sed quia! Possimus!
+                    {{ aboutapp }}
                 </p>
             </div>
 
@@ -222,14 +97,15 @@
             <div class="accordion-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h3>الاعلانات</h3>
-                        <p class="text-muted">اعلانات , عروض , اشياء اخرى</p>
+                        <h3> {{ $t('profile.ads') }} </h3>
+                        <p class="text-muted"> {{ $t('profile.alertSetting') }} </p>
                     </div>
 
                     <div>
                         <v-switch
                             v-model="switch1"
                             color="success"
+                            @change="changeofferStatus()"
                         ></v-switch>
                     </div>
                 </div>
@@ -250,30 +126,30 @@
         </h2>
         <div id="collpsesea6" class="accordion-collapse collapse" aria-labelledby="headingERw6" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                <!-- الاسئلة الشائعة  -->
-                <div class="accordion-item mb-3">
-                    <h2 class="accordion-header" id="headingERw8">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collpsesea0" aria-expanded="false" aria-controls="collpsesea0">
-                        <div class="d-flex align-items-center">
-                            <h5 class="fw-bold"> كيفية عمل الموقع ؟</h5>
-                        </div>
+
+
+                <div class="accordion1" id="faq">
+                    <div class="accordion-item mb-3" v-for="(faq,i) in FAQS" :key="faq.id">
+                        <h2 class="accordion-header" :id="`heading${faq.id}`">
+                        <button class="accordion-button" :class="{ collapsed: i > 0 }" type="button" data-bs-toggle="collapse"
+                            :data-bs-target="`#collapse${faq.id}`"
+                            :aria-expanded="i === 0"
+                            :aria-controls="`collapse${faq.id}`"
+                        >
+                            {{ faq.question }}
                         </button>
-                    </h2>
-
-                    <div id="collpsesea0" class="accordion-collapse collapse" aria-labelledby="headingERw8" data-bs-parent="#accordionExample">
+                        </h2>
+                        <div :id="`collapse${faq.id}`" class="accordion-collapse collapse"  :class="{ show: i === 0 }"  :aria-labelledby="`heading${faq.id}`" data-bs-parent="#faq">
                         <div class="accordion-body">
-
-
-                        <div class="aboutImage">
-
-                            <p class="fw-6 aboutP mx-auto w-75">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo libero recusandae, minima atque eveniet consequuntur ex similique dolorum ipsa voluptatum aspernatur, explicabo doloribus quas nihil eum dolore temporibus, expedita rerum. Ab ea dolores facere non optio asperiores officiis. Accusantium nam nobis, aliquid facere est cupiditate quasi sed quia! Possimus!
-                            </p>
+                            {{ faq.answer }}
                         </div>
-
                         </div>
                     </div>
+                    
+
                 </div>
+
+
             </div>
         </div>
         </div>
@@ -292,8 +168,8 @@
         <div id="collpsesea55" class="accordion-collapse collapse" aria-labelledby="headingERw77" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="d-flex justify-content-between flex-column">
-                    <h2 class="text-center fw-bold"> مرحبا بك </h2>
-                    <p class="text-center text-muted"> من فضلك قم بتحديد اللغة التي تريدها </p>
+                    <h2 class="text-center fw-bold"> {{ $t('profile.welcome') }}  </h2>
+                    <p class="text-center text-muted"> {{ $t('profile.chooseLang') }} </p>
 
                     <div class="lang_buttons d-flex justify-content-center mt-4">
 
@@ -302,7 +178,7 @@
                             <div class="lang_image">
                                 <img :src="suadia" alt="">
                             </div>
-                            <h5 class="fw-bold">اللغة العربية</h5>
+                            <h5 class="fw-bold">{{ $t('profile.arabic') }}</h5>
 
                         </button>
 
@@ -311,7 +187,7 @@
                             <div class="lang_image">
                                 <img :src="usa" alt="">
                             </div>                               
-                             <h5 class="fw-bold">اللغة الانجليزية</h5>
+                             <h5 class="fw-bold">{{ $t('profile.english') }}</h5>
 
                         </button>
                     </div>
@@ -319,11 +195,21 @@
             </div>
         </div>
         </div>
+
+        <!-- single accordion => حذف الحساب -->
+        <deleteAccount />
+
+
+
     </section>
 </template>
 
 <script>
-// import '../../'
+
+import axios from 'axios'
+import personalProfile from './personalProfile.vue'
+import deleteAccount from './deleteAccount.vue'
+
 export default {
     data(){
         return{
@@ -335,32 +221,120 @@ export default {
             profilell : require('../../assets/profilell.png'),
             suadia : require('../../assets/saudi.png'),
             usa : require('../../assets/united_states.png'),
-            items: ["+996", "+20", "565", "+10"],
-            switch1: true,
+            logo : require('../../assets/logoz.png'),
+            items: [],
+            switch1: false,
             ar : 'ar',
             en : 'en',
             lang : '',
+
+            // user data
+            name  : '',
+            phone : null,
+            old_password : '',
+            new_password : '',
+            confirmPassword : '',
+            country_key : '',
+            disabled : false,
+            isPhoneChanged : false
+
+
+            // FAQS : [
+            //     {
+            //         id:1,
+            //         faqTitle : 'كيفية عمل المقع',
+            //         faqDesc : '111111111111111111111111111111111111111111111111111111111111111',
+            //         unique : 1
+            //     },
+            //     {
+            //         id:2,
+            //         faqTitle : 'كيفية عمل المقع',
+            //         faqDesc : '111111111111111111111111111111111111111111111111111111111111111',
+            //         unique : 2
+            //     },
+            //     {
+            //         id:3,
+            //         faqTitle : 'كيفية عمل المقع',
+            //         faqDesc : '111111111111111111111111111111111111111111111111111111111111111',
+            //         unique : 3
+            //     },
+            // ]
         }
+    },
+    props : {
+        FAQS : Array,
+        policy : String,
+        aboutapp : String,
+        whous : String,
+        terms : String,
+    },
+    components:{
+        personalProfile,
+        deleteAccount
+    },
+    mounted(){
+        // this.getCountriesCode();
+        // this.getUser()
     },
     
     methods:{
+
+        // change language and local 
         setArabic(){
-            location.reload();
+            localStorage.setItem("locale", this.ar);
             this.$i18n.locale = this.ar
-            sessionStorage.setItem("locale", this.ar);
+            location.reload();
         },
         setEnglish(){
-            location.reload()
+            localStorage.setItem('locale', this.en);
             this.$i18n.locale = this.en
-            if( sessionStorage.getItem('locale') ){
-                sessionStorage.setItem('locale', this.en);
-            }
+            location.reload()
         },
-    }
+        
+        // ads option switch 
+        async changeofferStatus(){
+            await axios.post('control-notification',{
+                offers_notify : this.switch1   
+            })
+            .then( (response)=>{
+                if( response.data.code == 200 && response.data.key == "success" ){
+                    this.$swal({
+                        icon: 'success',
+                        title: response.data.msg,
+                        timer : 1000
+                    });
+                }else{
+                    this.$swal({
+                        icon: 'error',
+                        title: response.data.msg,
+                        timer : 1000
+                    });
+                }
+            } )
+            .catch( (err)=>{
+                console.error(err)
+            } )
+        },
+
+    },
+
+    
 }
 </script>
 
+
+
 <style lang="scss">
+.accHeaderIcon.trash{
+    background: rgba(255, 0, 0, 0.13);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.deleteBtn{
+    background-color:red ;
+    margin: 0 20px;
+}
 .lang_buttons{
     button{
         height: 200px;
@@ -385,6 +359,11 @@ export default {
             }
         }
     }
+}
+.changeLogo img{
+    width: 163px;
+    height: 113px;
+    object-fit: cover;
 }
 .accordion .fa-user{
     margin: auto;
@@ -445,5 +424,11 @@ export default {
     border: none !important;
     box-shadow: 5px 0px 16px #87767629 !important;
     outline: none !important;
+}
+
+@media( max-width:678px ){
+    .accordion{
+        width: 95%;
+    }
 }
 </style>

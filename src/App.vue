@@ -1,38 +1,149 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+      <router-view v-slot="{ Component, route }">
+        <transition name="fade" mode="out-in" >
+          <div :key="route.name">
+              <component :is="Component"></component>
+          </div>
+        </transition>  
+      </router-view> 
 </template>
 
 <script>
+// english style 
 import "../src/assets/css/ltr.scss";
+
+// import messaging config from firebase.js file and firebase/messaging module 
+import {messaging} from './firebase'
+import {getToken , onMessage }  from "firebase/messaging"
+
 export default {
   name: "App",
 
   data: () => ({
-    //
+    //options api
+    // provide: {
+    //   messaging: firebaseMessaging
+    // }
+    token : null,
+    user : null
+
   }),
+
+  methods:{
+
+
+    // making request permission to ask user to accept Notification  
+    async requestPermission(){
+      const permission = await Notification.requestPermission()
+      if( permission === "granted" ){
+        // Generate token
+        // we get the token from project setting => cloud messaging => generateKey
+        getToken( messaging , {vapidKey:"BFpjV9Ma8fIm3fnaCxRZMuQM_iPkZcyUpmje05C7sG-S7K7MNcep0DLwwim9mKV0w6hyLKaPtyHQDiXlJBol64w"} )
+        .then((currentToken) => {
+          if (currentToken) {
+            localStorage.setItem('FCMToken', currentToken.toString());
+            console.log(currentToken.toString())
+          } else {
+                // Show permission request UI
+                console.log('No registration token available. Request permission to generate one.');
+            }
+          }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+        });
+
+
+        //To handle foreground messages
+        onMessage(messaging, (message) => {
+          console.log(message.notification);
+          this.$toast.success({
+          component: {
+            template: `
+              <button class="alertCustom" @click="goToNot">
+                <div>{{title}}</div>
+                <div>{{body}}</div>
+              </button>
+            `,
+            methods: {
+              goToNot() {
+                this.$router.push('/NotificationPage')
+              }
+            },
+            data() {
+              return {
+                title: '',
+                body: ''
+              };
+            },
+            mounted() {
+              this.title = this.$attrs.title;
+              this.body = this.$attrs.body;
+            }
+
+          },
+          position: "top-left",
+          duration: 6758,
+          bindHtml: true,
+          attrs: {
+            title: message.notification.title,
+            body: message.notification.body
+          }
+
+        })
+
+        })
+
+
+
+      }else if( permission === "denied" ){
+        alert('You denied sending notification for You !')
+      }
+    }
+
+  } ,
   mounted() {
-    if (sessionStorage.getItem("locale") == "en") {
+
+    if (localStorage.getItem("locale") == "en") {
       document.querySelector("body").classList.add("ltr");
     } else {
       document.querySelector("body").classList.remove("ltr");
     }
+
+
+
+    if( localStorage.getItem('IsLoggedIn') == 'true' ){
+      localStorage.setItem('IsLoggedIn', true)
+    }else {
+      localStorage.setItem('IsLoggedIn', false)
+    }
+
+
+
   },
+  created(){
+    // this.token =  localStorage.getItem('token');
+    // this.token = null;
+    // this.user =  localStorage.getItem('user');
+    // this.user = null
+                this.requestPermission();
+  },
+  updated(){
+  }
+
 };
 </script>
+
 
 <style lang="scss">
 $base-color: #1ec2a8;
 $mainColor: #1ec2a8;
 $mainColor2: #bdbaba;
-
 .mainColor {
   color: $mainColor;
 }
-
+.main_btn:disabled{
+    opacity: .5;
+    cursor: no-drop;
+}
 * {
   margin: 0;
   padding: 0;
@@ -336,5 +447,52 @@ textarea.default_input {
 .bg-main {
   background-color: $mainColor !important;
   color: #ffffff !important;
+}
+</style>
+
+<style>
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+  background-color: #2ABDC7;
+}
+
+
+@media( max-width:768px ){
+  h5{
+    font-size: 17px;
+  }
+  .v-dialog .v-overlay__content{
+    width:90% !important;
+  }
+}
+.alertCustom{
+  font-family:"DIN-Arabic", sans-serif !important;;
+}
+
+/* transition  */
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: .6;
 }
 </style>

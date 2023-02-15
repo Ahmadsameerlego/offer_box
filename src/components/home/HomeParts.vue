@@ -7,16 +7,21 @@
             :pagination="{
             clickable: true,
             }"
+            :autoplay="{
+                delay: 2500,
+                disableOnInteraction: false,
+            }"
             :modules="modules"
             class="mySwiper mt-4"
         >
 
-                <swiper-slide  class="swiperSlide" v-for="part in parts" :key="part">
-                    <router-link to="/" >
+                <swiper-slide  class="swiperSlide" v-for="part in categories" :key="part.id">
+                    <!-- <router-link :to="'/fileredcategories/'+part.id" > -->
+                    <router-link :to="{ name: 'fileredcates', params: { id: part.id }, query: { slug: part.slug } }" >
 
-                        <img :src="part.partImage" alt="">
+                        <img :src="part.image" alt="">
 
-                        <h6> {{ part.partName }} </h6>
+                        <h6> {{ part.name }} </h6>
                     </router-link>
                 </swiper-slide>
         </swiper>
@@ -35,43 +40,50 @@ import "swiper/css/pagination";
 
 
 // import required modules
-import { Pagination } from "swiper";
+import {Autoplay, Pagination } from "swiper";
 
 export default {
     data(){
         return{
             parts : [
                 {
+                    id:1,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
                 },
                  {
+                    id : 2,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
                 },
                  {
+                    id:3,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
                 },
                  {
+                    id:4,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
                 },
                  {
+                    id:5,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
                 },
                  {
+                    id: 6,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
                 },
                  {
+                    id:7,
                     partName : 'الكترونيات',
                     partImage : require('../../assets/slider1.jpg'),
 
@@ -85,9 +97,16 @@ export default {
     },
     setup() {
         return {
-            modules: [Pagination],
+            modules: [Autoplay , Pagination],
         };
     },
+    props:{
+        categories : Array
+    },
+    mounted(){
+
+
+    }
 }
 </script>
 

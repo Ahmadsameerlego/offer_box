@@ -32,12 +32,12 @@
               src="../../assets/noun_mobile.png"
             ></v-img>
           </span>
-          <v-select :items="items" solo v-model="countryCode" name="countryCode"></v-select>
+          <v-select :items="items" solo v-model="calling_code" name="calling_code"></v-select>
         </div>
       </div>
 
       <div class="mt-3 mb-3 d-flex justify-content-center">
-        <button class="main_btn up">{{ $t('auth.confirm') }}</button>
+        <button class="main_btn up" :disabled="disabled">{{ $t('auth.confirm') }}</button>
       </div>
     </form>
   </div>
@@ -47,24 +47,55 @@
 import axios from 'axios';
 export default {
   data: () => ({
-    items: ["+996", "+20", "565", "+10"],
+    items: [],
     phone: "",
-    countryCode: "",
+    calling_code: null,
+    disabled : false
   }),
   methods:{
     async submitForm(){
+      this.disabled = true
       const formData = new FormData(this.$refs.forgetForm)
       await axios.post(
-        `https://jsonplaceholder.typicode.com/posts`,
+        `password/forget`,
         formData ,
       ).then((response) => {
-        if(response.status == 201){
-          console.log(response)
+        if(response.status == 200 && response.data.key == "success"){
+          this.$swal({
+              icon: 'success',
+              title: response.data.msg,
+          });
+          localStorage.setItem('phone', this.phone)
+          this.$router.push('/confirmCode')
+        }else{
+          this.$swal({
+              icon: 'error',
+              title: response.data.msg,
+          });
         }
+        this.disabled = false
       }).catch(e => {
         console.error(e);
       })
-    }
+    },
+    
+    // get countryCode 
+    async getCountriesCode(){
+       await axios.get('countries')
+      .then( (response)=>{
+        // this.items = response.data.data.countries;
+
+
+        for( let i = 0 ; i < response.data.data.countries.length ; i++){
+          this.items.push(response.data.data.countries[i].calling_code)
+
+        }
+
+      } )
+    },
+  },
+  mounted(){
+    this.getCountriesCode()
   }
 };
 </script>

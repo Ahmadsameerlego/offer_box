@@ -1,6 +1,14 @@
 body.ltr {
   direction: ltr !important;
+  .countryKay{
+    left: auto;
+    right: 0;
+  }
 
+  header .NavBar .nav-item .nav-link::before{
+    left:0 !important;
+    right:auto !important
+  }
   .v-locale--is-ltr {
     direction: ltr !important;
   }
@@ -78,5 +86,4 @@ body.ltr {
       }
     }
   }
-
 }

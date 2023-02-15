@@ -35,7 +35,7 @@
               src="../../assets/noun_mobile.png"
             ></v-img>
           </span>
-          <v-select :items="items" v-model="countryCode" name="code" solo></v-select>
+          <v-select  :items="items" v-model="calling_code" name="calling_code" ></v-select>
         </div>
       </div>
 
@@ -59,7 +59,7 @@
               src="../../assets/Unlock.png"
             ></v-img>
           </span>
-          <v-btn class="float_btn" color="white" elevation="0" small
+          <v-btn class="float_btn" color="white" elevation="0" small 
             type="button" @click="switchVisibility"
             ><v-img
               lazy-src="../../assets/eye-close.png"
@@ -74,7 +74,7 @@
         {{ $t('auth.forgitPassword') }}
         </router-link>
       <div class="mt-3 mb-3 d-flex justify-content-center">
-        <button class="main_btn up" color="#1ec2a8" elevation="0" x-large>{{ $t('auth.login') }}</button>
+        <button class="main_btn up" color="#1ec2a8" elevation="0" x-large :disabled="disabled">{{ $t('auth.login') }}</button>
       </div>
       <div class="mt-3 mb-3 d-flex justify-content-center" style="gap:5px">
         <span>{{ $t('auth.notsigned') }}</span>
@@ -90,11 +90,14 @@
 import axios from 'axios';
 export default {
   data: () => ({
-    items: ["+996", "+20", "565", "+10"],
+    items: [],
     password: "",
     phone: "",
-    countryCode: "",
-    passwordFieldType: "password"
+    calling_code: null,
+    passwordFieldType: "password",
+    disabled : false,
+    website : true,
+    token : ''
   }),
   methods: {
     switchVisibility() {
@@ -102,19 +105,124 @@ export default {
     },
 
     async submitForm(){
-      const formData = new FormData(this.$refs.form)
+      this.disabled = true
+      const formData = new FormData(this.$refs.form);
+      formData.append('website', this.website)
+      formData.append('device_id', localStorage.getItem('keyForMacAndID'))
+      formData.append('device_type', 'android')
       await axios.post(
-        `https://jsonplaceholder.typicode.com/posts`,
+        `login`,
         formData ,
       ).then((response) => {
-        if(response.status == 201){
-          console.log(response)
+        if(response.status == 200 && response.data.key == "success"){
+          this.$swal({
+              icon: 'success',
+              title: response.data.msg,
+              timer: 2000,
+              showConfirmButton: false,
+          });
+
+          let user = JSON.stringify(response.data.data.user)
+          this.token = response.data.data.token
+
+
+          // set the user as logged in 
+          localStorage.setItem('IsLoggedIn', true);
+
+
+          
+          localStorage.setItem('token', this.token)
+          // this.$store.dispatch('saveToken', response.data.data.token)
+          // localStorage.setItem('token', response.data.data.token);
+          localStorage.setItem('user', user);
+          this.$router.push('/');
+
+        }else{
+          this.$swal({
+              icon: 'error',
+              title: response.data.msg,
+              timer: 3000,
+              showConfirmButton: false,
+
+
+          });
         }
+        this.disabled = false;
       }).catch(e => {
         console.error(e);
       })
-    }
+    },
+
+    // get countryCode 
+    async getCountriesCode(){
+       await axios.get('countries')
+      .then( (response)=>{
+        // this.items = response.data.data.countries;
+
+
+        for( let i = 0 ; i < response.data.data.countries.length ; i++){
+          this.items.push(response.data.data.countries[i].calling_code)
+
+          // console.log(this.items)
+        }
+
+      } )
+    },
+
   },
+
+
+  mounted(){
+    this.getCountriesCode();
+
+    if( localStorage.getItem('IsLoggedIn') == 'true' ){
+      this.$router.push('/')
+    }
+
+    // get old value if exist
+    // let UUID = localStorage.getItem('keyForMacAndID');
+    // if( UUID == null ){
+    //   let randomID = Math.floor(Math.random()*100000);
+    //   localStorage.setItem('keyForMacAndID' , randomID)
+    //   UUID = localStorage.getItem('keyForMacAndID')
+    // }
+
+
+    
+  // // get old value if exist
+  //   let macAddress = localStorage.getItem('macAddress');
+  //   if( macAddress == null ){
+  //     let randomID = Math.floor(Math.random()*100000);
+  //     localStorage.setItem('macAddress' , randomID)
+  //     macAddress = localStorage.getItem('macAddress')
+  //   }
+
+
+
+    
+
+    fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => localStorage.setItem('macAddress', data.ip))
+    .catch(error => console.error(error));
+
+
+    fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => localStorage.setItem('keyForMacAndID', data.ip))
+    .catch(error => console.error(error));
+
+    
+
+    // localStorage.setItem('token', this.token)
+
+    // console.log(this.token)
+
+  },
+
+  // created(){
+  // },
+
   
 };
 </script>
