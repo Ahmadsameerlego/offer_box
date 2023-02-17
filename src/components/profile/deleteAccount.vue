@@ -78,7 +78,7 @@ export default {
                     localStorage.setItem('IsLoggedIn', 'false')
 
                     location.reload()
-                    this.$router.push('/')
+                    this.$router.push('/HomeLogin')
 
                 }else{
                     this.$swal({

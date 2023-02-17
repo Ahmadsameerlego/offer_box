@@ -55,39 +55,15 @@ export default {
         //To handle foreground messages
         onMessage(messaging, (message) => {
           console.log(message.notification);
+          console.log(message.notification.title);
           this.$toast.success({
-          component: {
-            template: `
-              <button class="alertCustom" @click="goToNot">
-                <div>{{title}}</div>
-                <div>{{body}}</div>
-              </button>
+            message : `
+              <div> ${message.notification.title} </div>
+              <div> ${message.notification.body} </div>
             `,
-            methods: {
-              goToNot() {
-                this.$router.push('/NotificationPage')
-              }
-            },
-            data() {
-              return {
-                title: '',
-                body: ''
-              };
-            },
-            mounted() {
-              this.title = this.$attrs.title;
-              this.body = this.$attrs.body;
-            }
-
-          },
-          position: "top-left",
-          duration: 6758,
-          bindHtml: true,
-          attrs: {
-            title: message.notification.title,
-            body: message.notification.body
-          }
-
+          
+            position: "top-left",
+            duration: 6758,
         })
 
         })

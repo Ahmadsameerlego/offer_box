@@ -115,21 +115,8 @@
               
             </section>
 
-            <!-- search box  -->
-            <section id="search">
-                <v-autocomplete
-                  v-model="value"
-                  :items="items"
-                  dense
-                  filled
-                  :label="$t('nav.searchOffer')"
-                  class="searchBox"
-              ></v-autocomplete>
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </section>
-
-
-
+            <!-- search bar  -->
+            <searchBar />
 
         </div>
     </section>
@@ -140,13 +127,15 @@
 <script>
 import PageSlider from './PageSlider.vue';
 import googleMap from './googleMap.vue';
+
+import searchBar from '../share/sreachBarCates.vue'
 import axios from 'axios'
 export default {
     data(){
       return{
         src : require('../../assets/logoz.png'),
-        items: ['foo', 'bar', 'fizz', 'buzz'],
-        value: null,
+
+        // search categories array 
         dialog: false,
         latLng : { lat : 0 , lng : 0},
         user : {},
@@ -158,6 +147,7 @@ export default {
     components:{
       PageSlider,
       googleMap,
+      searchBar
     },
     methods:{
 
@@ -232,8 +222,8 @@ export default {
         .then( (res)=>{
           this.noti_count = res.data.data.num_not_seen_notifications
         } )
-        .catch( ()=>{
-          this.noti_count = 0
+        .catch( (err)=>{
+          console.log(err)
         } )
       },
 
@@ -247,9 +237,6 @@ export default {
               timer: 2000,
               showConfirmButton: false,
           });
-          // console.log('dfghj');
-          //         console.log(this.isLoggedIn);
-
         }
 
         
@@ -265,10 +252,8 @@ export default {
     },
 
 
-    updated(){
-      this.getClientInfo(),
-      this.getNotUnSee()
-    },
+    // updated(){
+    // },
     created(){
       this.user = localStorage.getItem('user');
       if(this.user){
@@ -281,10 +266,12 @@ export default {
     },
     props:{
       sliders : Array
-    }
+    },
 
-    // mounted(){
-    // },
+    mounted(){
+      this.getClientInfo(),
+      this.getNotUnSee()
+    },
     
 
 

@@ -95,7 +95,8 @@ const routes = [
   {
     path : '/profile',
     name : 'profile',
-    component : UserProfile
+    component : UserProfile,
+    meta : { requiresAuth : true }
   },
   {
     path : '/about-us',

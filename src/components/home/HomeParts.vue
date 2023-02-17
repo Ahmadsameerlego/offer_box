@@ -146,4 +146,14 @@ export default {
         }
     }
     .swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{ bottom: 0; }
+
+    @media( max-width:768px ){
+        .swiper .swiperSlide{
+            width:100px !important;
+            height:60px
+        }
+        .swiper .swiperSlide h6{
+            font-size: 12px;
+        }
+    }
 </style>

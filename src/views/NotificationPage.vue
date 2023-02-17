@@ -37,7 +37,7 @@ export default {
     },
     methods:{
         async getNotification(){
-            await axios.get(`notifications?h`, {
+            await axios.get(`notifications`, {
                 headers : {
                     Authorization:  `Bearer ${localStorage.getItem('token')}`
                 }
