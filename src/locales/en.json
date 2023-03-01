@@ -14,7 +14,9 @@
       "city" : "city",
       "new" : "newest",
       "old" : "oldest",
-      "near" : "nearest"
+      "near" : "nearest",
+      "searchForCats" : "search for Categories....",
+    "searchForStore" : "search for stores ..."
     },
     "footer" : {
       "about" : "About",
@@ -100,7 +102,22 @@
       "notFound" : "No Data Found",
       "open" : "open",
       "close" : "close",
-      "pleaseLogin" : "please , login first"
+      "pleaseLogin" : "please , login first",
+      "confirm" : "confirm",
+      "downloads" : "downloads",
+      "clients" : "clients",
+      "stores" : "stores",
+      "downloadApp" : "you can download the application and keep in touch with latest Advertisements",
+      "noData" : "no data found",
+      "loadMore"  : "load more",
+      "loginSuccess" : "login successfully , welcome to your page",
+      "loginFailed" : " something went wrong",
+      "regSuccess" : "Your Account has been registered"  ,
+      "activeAcc" : "your account has been registered successfully",
+
+      "copyUrl" : "th URL copied successfully"
+  
+
 
 
     },
@@ -127,7 +144,8 @@
       "signed" : "Already have an account?",
       "confirm" : "confirm",
       "dataConfirm" : "Please enter the verification code sent to your mobile",
-      "resetPassword" : "Reset Password"
+      "resetPassword" : "Reset Password",
+      "dataChangePass" : "please, change your password"
 
     },
     "store":{

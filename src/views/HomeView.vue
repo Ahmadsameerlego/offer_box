@@ -53,7 +53,8 @@ export default defineComponent({
       paid_ads : [],
       categories : [],
       stores : [],
-      ads :[]
+      ads :[],
+      webData : {}
     }
   },
   mounted(){
@@ -78,12 +79,12 @@ export default defineComponent({
         }
       })
       .then( (res)=>{
-        this.sliders = res.data.data[0].sliders;
-        this.latest_ads = res.data.data[1].latest_ads;
-        this.paid_ads = res.data.data[2].paid_ads;
-        this.categories = res.data.data[3].categories;
-        this.stores = res.data.data[4].stores;
-        this.ads = res.data.data[5].ads;
+        this.sliders = res.data.data.sliders;
+        this.latest_ads = res.data.data.latest_ads;
+        this.paid_ads = res.data.data.paid_ads;
+        this.categories = res.data.data.categories;
+        this.stores = res.data.data.stores;
+        this.ads = res.data.data.ads;
 
         this.loader = false
 
@@ -93,6 +94,8 @@ export default defineComponent({
         console.log( err )
       } )
     },
+
+
 
 
 

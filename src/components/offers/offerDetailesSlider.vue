@@ -4,30 +4,36 @@
     :items-to-show="1"
     :wrap-around="false"
     v-model="currentSlide"
+    v-if="offerDetialsImages"
   >
-    <Slide v-for="img in imgs" :key="img">
+    <Slide v-for="img in offerDetialsImages" :key="img.id">
       <div class="carousel__item">
         <div class="item-option">
-          <v-btn icon="mdi-share-variant" color="main"></v-btn>
-          <v-btn icon="mdi-heart" color="main"></v-btn>
+          <v-btn icon="mdi-share-variant" color="main" @click="copyUrl()"></v-btn>
+
+          <v-btn icon="mdi-heart" class="addToFav" :class="[{adFav : adFav},{is_favorite:is_favorite}]" color="main" @click="addToFav()"></v-btn>
+
         </div>
-        <img :src="img.url" alt="" />
+        <img :src="img.image" alt="" />
       </div>
     </Slide>
   </Carousel>
+
+
   <Carousel
     id="thumbnails"
     :items-to-show="5"
     :wrap-around="true"
     v-model="currentSlide"
     ref="carousel"
+    v-if="offerDetialsImages"
   >
-    <Slide v-for="img in imgs" :key="img">
+    <Slide v-for="img in offerDetialsImages" :key="img.id">
       <div class="carousel__item" @click="slideTo(img.id - 1)">
-        <img :src="img.url" alt="" />
+        <img :src="img.image" alt="" />
       </div>
     </Slide>
-    <template #addons>
+    <template #addons v-if="offerDetialsImages">
       <Navigation />
     </template>
   </Carousel>
@@ -37,6 +43,7 @@
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
+import axios from 'axios'
 
 export default defineComponent({
   components: {
@@ -47,17 +54,66 @@ export default defineComponent({
 
   data: () => ({
     currentSlide: 0,
-    imgs: [
-      { id: 1, url: require("../../assets/product.png") },
-      { id: 2, url: require("../../assets/product.png") },
-      { id: 3, url: require("../../assets/product.png") },
-    ],
+    adFav : null,
+    
   }),
   methods: {
+
+    copyUrl(){
+      var element = window.location;
+       navigator.clipboard.writeText(element);      
+
+      this.$swal({
+          icon: 'success',
+          title: this.$t('common.copyUrl'),
+          timer: 2000,
+          showConfirmButton: false,
+      });
+    },
     slideTo(val) {
       this.currentSlide = val;
     },
+
+    async addToFav(){
+
+      const fd = new FormData()
+      fd.append('ad_id',this.adId)
+      fd.append('mac_address',localStorage.getItem('macAddress'))
+      
+      await axios.post(`add-to-fav`,fd)
+      .then( (res)=>{
+        if( res.data.code == 200 && res.data.key == "success" ){
+          this.adFav = true;
+          // this.is_favorite = true
+          this.$swal({
+              icon: 'success',
+              title: res.data.msg,
+              timer: 2000,
+              showConfirmButton: false,
+          });
+        }else{
+          this.$swal({
+              icon: 'error',
+              title: res.data.msg,
+              timer: 2000,
+              showConfirmButton: false,
+          });
+        }
+      } )
+      .catch( (err)=>{
+        console.error(err)
+      } )
+    }
+
   },
+  props : {
+    offerDetialsImages : Array,
+    is_favorite : Boolean,
+    adId : Number
+  },
+  mounted(){
+    console.log(this.is_favorite);
+  }
 });
 </script>
 
@@ -80,6 +136,7 @@ $mainColor: #1ec2a8;
     width: 100%;
     border-radius: 5px;
     height: 100%;
+    object-fit: contain;
   }
 }
 
@@ -103,5 +160,13 @@ $mainColor: #1ec2a8;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.addToFav.adFav{
+  color:red !important
+}
+.addToFav.is_favorite{
+  color:red !important
+
 }
 </style>

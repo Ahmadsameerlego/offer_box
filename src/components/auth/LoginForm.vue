@@ -117,7 +117,7 @@ export default {
         if(response.status == 200 && response.data.key == "success"){
           this.$swal({
               icon: 'success',
-              title: response.data.msg,
+              title: this.$t('common.loginSuccess'),
               timer: 2000,
               showConfirmButton: false,
           });
@@ -140,7 +140,7 @@ export default {
         }else{
           this.$swal({
               icon: 'error',
-              title: response.data.msg,
+              title: this.$t('common.loginFailed'),
               timer: 3000,
               showConfirmButton: false,
 

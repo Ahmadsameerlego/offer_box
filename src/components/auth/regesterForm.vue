@@ -180,7 +180,7 @@ export default {
         if(response.status == 200 && response.data.key == "needActive"){
           this.$swal({
               icon: 'success',
-              title: response.data.msg,
+              title: this.$t('common.regSuccess'),
               timer : 2000,
               showConfirmButton: false,
 

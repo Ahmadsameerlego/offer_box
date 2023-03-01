@@ -5,6 +5,19 @@
               <component :is="Component"></component>
           </div>
         </transition>  
+        <v-snackbar
+          v-model="snackbar"
+          class="notificationAlert"
+        >
+          <router-link to="/NotificationPage">
+            <div class="title">
+              {{ this.toastTitle }}
+            </div>
+            <div class="body">
+              {{ this.toastBody }}
+            </div>
+          </router-link>
+        </v-snackbar>
       </router-view> 
 </template>
 
@@ -16,6 +29,7 @@ import "../src/assets/css/ltr.scss";
 import {messaging} from './firebase'
 import {getToken , onMessage }  from "firebase/messaging"
 
+import axios from 'axios'
 export default {
   name: "App",
 
@@ -25,12 +39,28 @@ export default {
     //   messaging: firebaseMessaging
     // }
     token : null,
-    user : null
+    user : null,
+    toastTitle : '',
+    toastBody : '',
+    snackbar : false,
+    notifiCount : null
 
   }),
 
   methods:{
 
+    // regenerate notification count 
+    async notiCount(){
+      await axios.get('unseen-notifications-count',{
+        headers :{
+            Authorization:  `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then( (res)=>{
+        this.notiCount = res.data.data.num_not_seen_notifications
+        localStorage.setItem('noticount', this.notiCount)
+      } )
+    },
 
     // making request permission to ask user to accept Notification  
     async requestPermission(){
@@ -38,7 +68,8 @@ export default {
       if( permission === "granted" ){
         // Generate token
         // we get the token from project setting => cloud messaging => generateKey
-        getToken( messaging , {vapidKey:"BFpjV9Ma8fIm3fnaCxRZMuQM_iPkZcyUpmje05C7sG-S7K7MNcep0DLwwim9mKV0w6hyLKaPtyHQDiXlJBol64w"} )
+        getToken( messaging , {vapidKey:"AAAACCt-uuw:APA91bGRrYAXQ1DWg-yUvG284ltH-qXk0b3jHpH_btyELFcMcIJtgTu2L_l4XRDEpDihTyPtu012gGrWHiGrT20KIZVRCOoNkb37GXlfHME3_jvDf6vPWLyr4SenVhUYCbd0Jt1-q1Ho"} )
+        // {vapidKey:"BFpjV9Ma8fIm3fnaCxRZMuQM_iPkZcyUpmje05C7sG-S7K7MNcep0DLwwim9mKV0w6hyLKaPtyHQDiXlJBol64w"}
         .then((currentToken) => {
           if (currentToken) {
             localStorage.setItem('FCMToken', currentToken.toString());
@@ -54,18 +85,13 @@ export default {
 
         //To handle foreground messages
         onMessage(messaging, (message) => {
-          console.log(message.notification);
-          console.log(message.notification.title);
-          this.$toast.success({
-            message : `
-              <div> ${message.notification.title} </div>
-              <div> ${message.notification.body} </div>
-            `,
-          
-            position: "top-left",
-            duration: 6758,
-        })
+          this.notiCount()
+          this.toastTitle = message.notification.title
+          this.toastBody = message.notification.body
+          this.snackbar = true
 
+          
+           
         })
 
 
@@ -113,6 +139,21 @@ export default {
 $base-color: #1ec2a8;
 $mainColor: #1ec2a8;
 $mainColor2: #bdbaba;
+// .notificationAlert{
+//   position: fixed;
+//   top:70px;
+//   right:70px
+// }
+.notificationAlert a{
+  color:#fff;
+}
+.notificationAlert .title{
+  font-size: 18px;
+  font-weight: 600;
+}
+.notificationAlert .body{
+  font-size: 15px;
+}
 .mainColor {
   color: $mainColor;
 }
@@ -470,5 +511,9 @@ html {
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: .6;
+}
+
+#app{
+  background-color: #fff;
 }
 </style>

@@ -4,7 +4,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <h6 class="labeledSection fw-bold mb-3"> {{  $t('nav.who')}}  </h6>
-                    <p class="fw-6">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maxime fugit praesentium tempore ullam assumenda accusamus! Expedita adipisci odio minima. Voluptates quasi natus eveniet enim? Voluptatum, sint cupiditate esse autem quasi illo hic, doloremque mollitia, corrupti assumenda placeat perspiciatis perferendis qui.</p>
+                    <p class="fw-6">
+                        {{ whous }}
+                    </p>
                 </div>
 
                 <div class="col-md-6">
@@ -23,6 +25,9 @@ export default {
         return{
             src : require('../../assets/logo2.png')
         }
+    },
+    props:{
+        whous  : String
     }
 }
 </script>

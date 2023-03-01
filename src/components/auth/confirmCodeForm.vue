@@ -85,6 +85,8 @@ export default {
           this.$swal({
               icon: 'success',
               title: response.data.msg,
+              timer:2000,
+              showConfirmButton: false,
           });
 
           this.$router.push('/confirmPassword')
@@ -92,6 +94,8 @@ export default {
           this.$swal({
               icon: 'error',
               title: response.data.msg,
+              timer:2000,
+              showConfirmButton: false,
           });
         }
 

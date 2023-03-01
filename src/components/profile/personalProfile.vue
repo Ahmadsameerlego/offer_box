@@ -69,8 +69,11 @@
 
                 <!-- save  -->
                 <div class="d-flex justify-content-between mx-auto mt-3 mb-5">
-                    <button class="main_btn up" style="min-width:38% ; color:#fff" data-bs-toggle="modal" data-bs-target="#changePass" type="button"> {{$t('profile.changePassword')}} </button>
+                    <button class="main_btn up" style="min-width:38% ; color:#fff" data-bs-toggle="modal" data-bs-target="#changePass" type="button" > {{$t('profile.changePassword')}} </button>
                     <button class="main_btn up" style="min-width:38%" @click.prevent="updateProfile()" :disabled="disabled" data-bs-toggle="modal" data-bs-target="#avtiveCodeModal"> {{$t('profile.save')}} </button>
+
+
+                
                 </div>
                 </form>
                 <!-- end personal form  -->
@@ -95,10 +98,10 @@
                             <form @submit.prevent="ActiveCode()" style="width:65%; margin:auto" ref="changePassForm">
                                 <v-otp-input
                                     ref="otpInput"
+                                    id="otpChange"
                                     input-classes="otp-input"
                                     separator=" "
                                     :num-inputs="6"
-                                    :should-auto-focus="true"
                                     v-modal="otpInput"
                                     name="otpInput"
                                     :is-input-num="true"
@@ -141,7 +144,7 @@
                                     <div class="form__label">
                                     <input
                                         class="default_input"
-                                        type="password"
+                                        :type="typePass"
                                         required=""
                                         :placeholder="$t('profile.enterPass')"
                                         name="old_password"
@@ -157,6 +160,7 @@
                                         ></v-img>
                                     </span>
                                     <v-btn class="float_btn" color="white" elevation="0" small
+                                        @click="showPassword"
                                         ><v-img
                                         lazy-src="../../assets/eye-close.png"
                                         height="25"
@@ -173,7 +177,7 @@
                                     <div class="form__label">
                                     <input
                                         class="default_input"
-                                        type="password"
+                                        :type="typeNewPassword"
                                         required=""
                                         :placeholder="$t('profile.enterPass')"
                                         name="new_password"
@@ -189,6 +193,7 @@
                                         ></v-img>
                                     </span>
                                     <v-btn class="float_btn" color="white" elevation="0" small
+                                        @click="showNewPassword"
                                         ><v-img
                                         lazy-src="../../assets/eye-close.png"
                                         height="25"
@@ -205,7 +210,7 @@
                                     <div class="form__label">
                                     <input
                                         class="default_input"
-                                        type="password"
+                                        :type="typePassConfrm"
                                         required=""
                                         :placeholder="$t('profile.enterConfirm')"
                                         name="confirmPassword"
@@ -221,6 +226,7 @@
                                         ></v-img>
                                     </span>
                                     <v-btn class="float_btn" color="white" elevation="0" small
+                                        @click="confrmPassword"
                                         ><v-img
                                         lazy-src="../../assets/eye-close.png"
                                         height="25"
@@ -280,6 +286,12 @@ export default {
             country_key : '',
             disabled : false,
             isPhoneChanged : false,
+
+            typePass: "password",
+            typeNewPassword : 'password',
+            typePassConfrm: "password",
+            dynamicAuto : false
+
         }
     },
 
@@ -300,6 +312,17 @@ export default {
         return { handleOnComplete, handleOnChange, otpInput };
     },
     methods:{
+
+        showPassword() {
+            this.typePass = this.typePass === "password" ? "text" : "password";
+        },
+        showNewPassword() {
+            this.typeNewPassword = this.typeNewPassword === "password" ? "text" : "password";
+        },
+        confrmPassword() {
+            this.typePassConfrm = this.typePassConfrm === "password" ? "text" : "password";
+        },
+
         // update profile 
         changed(){ 
              this.isPhoneChanged = true
@@ -314,10 +337,8 @@ export default {
             // console.log('sderftgyhjkl')
             // }
 
-            console.log(this.$refs.inputChange.value)
-            console.log(0 + this.phone)
             
-           
+           this.dynamicAuto = true
             this.disabled = true
             const fd = new FormData(this.$refs.profileForm);
 
@@ -330,45 +351,60 @@ export default {
             .then( (res)=>{
                 if( res.data.code == 200 && res.data.key=="success" ){
                     
-
+                    
+                    localStorage.setItem('updatedUserName', this.name)
+                    localStorage.setItem('isUserNameUpdated', true)
+                    
                     this.isPhoneChanged = res.data.data.has_changed_phone
 
                     if( this.isPhoneChanged == 'true' ){
-                        console.log('success');
                         this.isPhoneChanged = true
-                            // this.$refs.activeCodeModal.classList.add('d-block')
+
+                        // auto focus first element in otp 
+                        const modal = document.getElementById('avtiveCodeModal');
+                            modal.addEventListener('shown.bs.modal', function () {
+                            const otpInput = document.getElementById('otpChange')
+                            otpInput.firstElementChild.firstElementChild.focus();
+                        });
 
                     }else if(this.isPhoneChanged == 'false'){
                         this.$nextTick(() => {
                             // this.$refs.activeCodeModal.classList.add('d-none')
                             this.isPhoneChanged = false
                         });
+                        this.$swal({
+                            icon: 'success',
+                            title:res.data.msg ,
+                            timer : 2000,
+                            showConfirmButton: false,
+                        });
 
-                        console.log('falied')
+                        location.reload()
+                        
                     }
 
-                    this.$swal({
-                        icon: 'success',
-                        title:res.data.msg ,
-                        timer : 2000
-                    });
+                    
                 }else{
                     this.$swal({
                         icon: 'error',
                         title:res.data.msg,
-                        timer : 2000
+                        timer : 2000,
+                        showConfirmButton: false,
                     });
                 }
                 this.disabled = false
             } )
             .catch( (err)=>{
-                console.log(err)
-
-                
+                console.log(err) 
             } )
+            
         },
 
         async ActiveCode(){
+
+
+            
+
 
             this.disabled = true
             const formData = new FormData()
@@ -382,6 +418,10 @@ export default {
 
             formData.append('phone', localStorage.getItem('phone'))
 
+
+            
+
+
             console.log(otpsNumber);
             await axios.post(
                 `profile/changed-phone-activation`,
@@ -391,12 +431,23 @@ export default {
                 this.$swal({
                     icon: 'success',
                     title: response.data.msg,
+                    timer : 2000,
+                    showConfirmButton: false,
+
                 });
+
+                this.$refs.activeCodeModal.classList.remove('show');
+                this.$refs.activeCodeModal.style.display = 'none';
+                document.querySelector('.modal-backdrop').style.display = "none"
+
 
                 }else{
                 this.$swal({
                     icon: 'error',
                     title: response.data.msg,
+                    timer : 2000,
+                    showConfirmButton: false,
+
                 });
                 }
 
@@ -404,6 +455,10 @@ export default {
             }).catch(e => {
                 console.error(e);
             })
+            .finally( ()=>{
+                location.reload()
+            } )
+
         },
         // get user data 
         async getUser(){
@@ -475,6 +530,9 @@ export default {
     mounted(){
         this.getCountriesCode();
         this.getUser()
+
+
+        
     },
 }
 </script>

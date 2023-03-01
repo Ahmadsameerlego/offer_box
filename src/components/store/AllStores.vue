@@ -1,5 +1,8 @@
 <template>
-  <section id="stores" class="mt-5 mb-5" v-if="selectedStores.length>0">
+
+  <!-- loader  -->
+  <loader v-if="loader" />
+  <section id="stores" class="mt-5 mb-5" v-if="stores.length>0">
     <div class="container">
       <h5 class="labeledSection fw-bold"> {{ $t('nav.stores') }} </h5>
 
@@ -13,31 +16,59 @@
                     <!-- المحافظة  -->
 
 
-                      <select name="" id="" v-model="selectedOption1" class="form-select">
-                        <option value="" selected disabled hidden> {{$t('nav.governorate')}} </option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                      </select>
+                      <div class="position-relative w-100">
+                            <input type="text" v-model="regionQuery"  name="query" :placeholder="$t('nav.governorate')" class="form-control searchBox" @input="getRegions()">
+                            <i class="fa-solid fa-angle-down"></i>
+                      </div>
+
+                      <div v-if="showList1" style="position:absolute;width:95%;height:200px;overflow-y:auto;top:50px;z-index:999">
+                          <ul class="list-group" style="z-index:9999" v-if="filteredRegions.length>0">
+                              <li class="list-group-item" v-for="(item,index) in filteredRegions" :key="item.id" >
+                                      <span @click="setNewValueForRegion(item.name, item.id)" style="cursor:pointer" >
+                                          {{index+1}}.{{item.name}}
+                                      </span>
+                              </li>
+                              <li class="list-group-item">
+                                  <button @click.prevent="loadMore1" > {{ $t('common.loadMore') }} </button>
+                              </li>
+                          </ul>
+                          <ul class="list-group" v-else>
+                              <li class="list-group-item"> {{ $t('common.noData') }} </li>
+                          </ul>
+                      </div>
 
                     <img :src="flag" alt="" />
-                    <i class="fa-solid fa-angle-down"></i>
+                    <!-- <i class="fa-solid fa-angle-down"></i> -->
                 </v-col>
 
                 <v-col class="customCheck d-flex" cols="12" sm="3">
                     <!-- المدينة  -->
 
+                    <div class="position-relative w-100">
+                        <input type="text" v-model="query"  name="query" :placeholder="$t('nav.city')" class="form-control searchBox" @input="getData()">
+                        <i class="fa-solid fa-angle-down"></i>
+                    </div>
 
-                      <select name="" id="" v-model="selectedOption2" class="form-select">
-                        <option value="" selected hidden disabled> {{$t('nav.city')}}</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                      </select>
+                    <div v-if="showList" style="position:absolute;width:95%;max-height:200px;top:50px;z-index:999;overflow-y:auto;">
+                        <ul class="list-group" style="z-index:9999" v-if="filteredCities.length>0">
+                            <li class="list-group-item" v-for="(item,index) in filteredCities" :key="item.id" >
+                                    <span @click="setNewValue(item.name, item.id)" style="cursor:pointer" >
+                                        {{index+1}}.{{item.name}}
+                                    </span>
+                            </li>
+
+                            <li class="list-group-item">
+                                <button @click.prevent="loadMore" > {{ $t('common.loadMore') }} </button>
+                            </li>
+                        </ul>
+                        <ul class="list-group" v-else>
+                            <li class="list-group-item"> {{ $t('common.noData') }} </li>
+                        </ul>
+                    </div>
 
                     <img :src="flag" alt="" />
 
-                    <i class="fa-solid fa-angle-down"></i>
+                    <!-- <i class="fa-solid fa-angle-down"></i> -->
                 </v-col>
 
                 <div class="checks d-flex">
@@ -45,22 +76,19 @@
                     v-model="current"
                     color="info"
                     :label="$t('nav.new')"
-                    value = "current"
                     class="shrink mr-2 mt-0"
                     ></v-checkbox>
 
                     <v-checkbox
                     v-model="old"
                     color="info"
-                    value = "old"
                     :label="$t('nav.old')"
                     class="shrink mr-2 mt-0"
                     ></v-checkbox>
 
                     <v-checkbox
-                    v-model="near"
+                    v-model="nearest"
                     color="info"
-                    value = "near"
                     :label="$t('nav.near')"
                     class="shrink mr-2 mt-0"
                     ></v-checkbox>
@@ -86,7 +114,7 @@
 
         <div class="row">          
 
-            <div class="col-md-4 mb-4" v-for="store in selectedStores" :key="store.id">
+            <div class="col-md-4 mb-4" v-for="store in stores" :key="store.id">
 
               <v-lazy
                 v-model="isActive"
@@ -120,7 +148,7 @@
                 </p>
 
                 <router-link
-                  :to="'/store/'+1"
+                  :to="'/store/'+store.id"
                   class="button d-flex justify-content-center mx-auto w-75"
                 >
                   {{ $t('home.showStore') }}
@@ -145,8 +173,8 @@
       </section>
 
            <paginate
-                v-model="currentPage"
-                :page-count="totalPages"
+                v-model="currentPageP"
+                :page-count="totalPagesP"
                 :click-handler="page => pageClickHandler(page)"
                 :prev-text="'Prev'"
                 :next-text="'Next'"
@@ -174,107 +202,239 @@
   import Paginate from 'vuejs-paginate-next';
   import axios from 'axios'
 
+  import loader from '../share/pageLoader.vue' 
+
+
 export default {
   data() {
     return {
       src: require("../../assets/storeLogo.png"),
       flag: require("../../assets/flag.png"),
+
       current: false,
       old: false,
-      near: false,
+      nearest: false,
       isActive: false,
+
+      createdAt : 'asc',
+      loader : true ,
 
    
       selectedOption1:'',
       selectedOption2: '',
 
-      currentPage: 0,
-      perPage: 0,
-      totalPages: 0,
+      currentPageP: 1,
+      perPageP: 10,
+      totalPagesP: 0,
 
 
       stores : [],
+
+
+
+
+      regions : [],
+      cities : [],
+
+      city_id : null,
+      region_id : null,
+
+      query: null,
+      regionQuery : null ,
+      loading : false,
+      showList : false,
+      showList1 : false,
+
+      // city pagination 
+      currentPage : null,
+      perPage : null,
+      total : null,
+      showReadMore: true,
+
+      // region pagination
+      currentPage1 : null,
+      perPage1 : null,
+      total1 : null,
+      showReadMore1: true,
+
       
 
     };
   },
 
-  components:{
-    Paginate
-  },
-  created() {
-        this.totalPages = Math.ceil(this.stores.length / this.perPage)
-  },
 
-  updated(){
-    console.log(this.selectedOption1);
-    console.log(this.selectedOption2);
-  },
-
-  computed: {
-      selectedStores(){
-            let start = (this.currentPage - 1) * this.perPage
-            let end = start + this.perPage
-
-        // in case that no check must show all items , and if check any item return the value checked
-        if( this.near == false && this.old == false && this.current == false && this.selectedOption1 == '' && this.selectedOption2 == ''){
-          return this.stores,
-                this.stores.slice(start, end)
-
-        }else{
-          return this.stores.filter( store => {
-              if( this.current && store.timeState == 'current' ){
-                return true
-                
-              }
-              
-              if( this.near && store.timeState == 'near' ){
-                return true
-              }
-
-              if( this.old && store.timeState == 'old' ){
-                return true
-              }
-              if( this.selectedOption1 === store.value ){
-                return true
-              }
-              if( this.selectedOption2 === store.value2 ){
-                return true
-              }
-              return false
-            }
-            
-          )
-          
+  watch:{
+        current(){
+            this.getStores()
+        },
+        old(){
+            this.getStores()
+        },
+        nearest(){
+            this.getStores()
         }
 
+  },
+  
+  
+  components:{
+    Paginate,
+    loader
+  },
+  created() {
+        this.totalPagesP = Math.ceil(this.stores.length / this.perPageP)
+  },
 
 
-        
-      } ,
-
+  computed: {
       // displayedData() {
-      //       let start = (this.currentPage - 1) * this.perPage
-      //       let end = start + this.perPage
+      //       let start = (this.currentPageP - 1) * this.perPageP
+      //       let end = start + this.perPageP
       //       return this.stores.slice(start, end)
-      // }
-  }
-  ,
-    methods:{
-        pageClickHandler(page) {
-            this.currentPage = page
+      // },
+
+        filteredCities() {
+            return this.cities.filter(city => {
+                return city.name.toLowerCase().includes(this.query.toLowerCase())
+            })
+        },
+        filteredRegions() {
+            return this.regions.filter(region => {
+                return region.name.toLowerCase().includes(this.regionQuery.toLowerCase())
+            })
         },
 
 
+
+
+        pageCount() {
+            return Math.ceil(this.total / this.maxPerPage);
+        },
+        pageOffest() {
+            return this.maxPerPage * this.currentPage;
+        },
+        paginatedOrders() {
+            return this.cities.slice(0, this.currentPage * this.maxPerPage);
+        },
+        pageCount1() {
+            return Math.ceil(this.total1 / this.maxPerPage);
+        },
+        pageOffest1() {
+            return this.maxPerPage * this.currentPage1;
+        },
+        paginatedOrders1() {
+            return this.regions.slice(0, this.currentPage1 * this.maxPerPage);
+        },
+  }
+  ,
+    methods:{
+        
+
+
         async getStores(){
-          await axios.get(`nearstores?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&page=${this.currentPage}&category=${this.$route.query.slug}`)
+
+          if (this.current) {
+                this.createdAt = 'desc'
+            }
+            if (this.old) {
+                this.createdAt = 'asc'
+            }
+            if(this.nearest){
+                this.nearest = true
+            }
+
+
+          await axios.get(`nearstores?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&page=${this.currentPageP}&category=${this.$route.query.slug}&created_at=${this.createdAt}&nearest=${this.nearest}&region_id=${this.region_id}&city_id=${this.city_id}`)
           .then( (res)=>{
             this.stores = res.data.data.stores
-            this.totalPages = res.data.data.pagination.total_pages
-            this.perPage = res.data.data.pagination.per_page
-            this.currentPage = res.data.data.pagination.current_page
+            this.totalPagesP = res.data.data.pagination.total_pages
+            this.perPageP = res.data.data.pagination.per_page
+            this.currentPageP = res.data.data.pagination.current_page
+
+            this.loader = false
           } )
-        }
+        },
+
+
+        setNewValue(value, id){
+            this.query = value;
+            this.city_id = id
+            if( this.query == value ){
+                this.showList = false
+            }
+            this.getStores()
+
+            console.log(this.query)
+
+        },
+        setNewValueForRegion(value1, id){
+            this.regionQuery = value1;
+            this.region_id = id
+            if( this.regionQuery == value1 ){
+                this.showList1 = false
+            }
+            console.log(this.regionQuery)
+
+            this.getStores()
+
+        },
+       
+
+        async getRegions(){
+            this.showList1 = true
+            await axios.get(`regions?search=${this.regionQuery}&page=${this.currentPage1}`)
+            .then( (res)=>{
+                this.regions = res.data.data.regions
+
+                this.currentPage1 = res.data.data.pagination.current_page
+                this.perPage1 = res.data.data.pagination.per_page
+                this.total1 = res.data.data.pagination.total
+
+                if( this.regionQuery == '' ){
+                    this.showList1 = true
+                }
+            } )
+            .catch( (err)=>{
+                console.error(err)
+            } )
+        },
+
+        async getData() {
+            this.showList = true
+            await axios.get(`cities?search=${this.query}&page=${this.currentPage}`)
+            .then( (res)=>{
+                this.cities = res.data.data.cities
+
+                
+                this.currentPage = res.data.data.pagination.current_page
+                this.perPage = res.data.data.pagination.per_page
+                this.total = res.data.data.pagination.total
+
+
+                if( this.query == '' ){
+                    this.showList = true
+                }
+            } )
+            .catch( (err)=>{
+                console.error(err)
+            } )
+        },
+
+        loadMore() {
+            this.currentPage += 1;
+            this.getData()
+        },
+        loadMore1() {
+            this.currentPage1 += 1;
+            this.getRegions()
+        },
+
+
+
+        pageClickHandler(page) {
+            this.currentPageP = page
+            this.getStores()
+        },
 
     },
     mounted(){

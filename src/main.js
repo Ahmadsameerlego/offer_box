@@ -9,6 +9,14 @@ import './firebase'
 
 import Toaster from '@meforma/vue-toaster';
 
+import infiniteScroll from 'vue-infinite-scroll'
+import Dropdown from 'vue-simple-search-dropdown';
+
+import VueObserveVisibility from 'vue-observe-visibility'
+
+
+
+
 
 // import '../public/firebase-messaging-sw'
 
@@ -67,6 +75,9 @@ createApp(App)
   .use(i18n).use(VueI18n)
   .use(head)  
   .use(Toaster)
+  .use(infiniteScroll)
+  .use(Dropdown)
+  .use(VueObserveVisibility)
   .component("font-awesome-icon", FontAwesomeIcon)
   .use(Paginate)
   .mount('#app')

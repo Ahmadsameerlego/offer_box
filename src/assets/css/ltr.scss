@@ -5,6 +5,11 @@ body.ltr {
     right: 0;
   }
 
+  .categories .catrgItem{
+    margin-left: auto;
+    margin-right: 12px;
+  }
+
   header .NavBar .nav-item .nav-link::before{
     left:0 !important;
     right:auto !important

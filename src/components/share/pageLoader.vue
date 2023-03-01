@@ -59,12 +59,14 @@ export default {
     position: fixed;
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #151515), to(#000));
     background-image: linear-gradient(90deg, #151515 0, #000);
-    z-index: 2;
+    
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100vh;
+    top:0;
+    z-index: 4;
     .loader {
       width: 100px;
       height: 100px;

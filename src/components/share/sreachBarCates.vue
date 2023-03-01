@@ -1,10 +1,10 @@
 <template>
-    <section id="search">
+    <section class="searchBar" v-if="showStoreAd">
         
-            <div class="position-relative">
-                <input type="text" v-model="query" name="query" :placeholder="$t('nav.searchOffer')" class="form-control searchBox" @input="getData()">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
+        <div class="position-relative">
+            <input type="text" v-model="query" name="query" :placeholder="$t('nav.searchForCats')" class="form-control searchBox" @input="getData()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
 
         <div v-if="showList">
             <ul class="list-group" style="z-index:9999" v-if="categories.length>0">
@@ -21,6 +21,28 @@
 
 
     </section>
+
+
+    <!-- stores search  -->
+    <section class="searchBar" v-if="this.$route.path == '/stores'"> 
+        <div class="position-relative">
+            <input type="text" v-model="storeQuery" name="storeQuery" :placeholder="$t('nav.searchForStore')" class="form-control searchBox" @input="getStores()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <div v-if="showListStore">
+            <ul class="list-group" style="z-index:9999" v-if="nearstores.length>0">
+                <li class="list-group-item" v-for="(item,index) in nearstores" :key="item.id" >
+                    <router-link :to="{ name: 'stores' }" @click="setNewValueForStore(item.name )">
+                        {{index+1}}.{{item.name}}
+                    </router-link>
+                </li>
+            </ul>
+            <ul class="list-group" v-else>
+                <li class="list-group-item">No Data Found</li>
+            </ul>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -34,11 +56,23 @@ export default {
             loading : false,
             showList : false,
             catId : null,
-            catSlug : ''
+            catSlug : '',
+            showStoreAd : true,
+
+
+            // stores params 
+            nearstores : [],
+            storeQuery : null,
+            showListStore : false,
+
+
+            updatedStoreName : ''
         }
     },
     
     methods:{
+
+        // get categories 
         async getData() {
             await axios.get(`categories?search=${this.query}`)
             .then( (res)=>{
@@ -54,6 +88,7 @@ export default {
             } )
         },
 
+        // get categories 
         setNewValue(value, id , slug){
 
             if( this.$route.path.includes('fileredcategories') ){
@@ -66,8 +101,58 @@ export default {
             }
             this.query = value;
 
-        }
+        },
+
+
+
+
+        // get stores 
+        async getStores(){
+            await axios.get(`nearstores?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&search=${this.storeQuery}`)
+            .then( (res)=>{
+                this.nearstores = res.data.data.stores
+
+                this.showListStore = true
+                if( this.storeQuery == '' ){
+                    this.showListStore = false
+                }
+
+            } )
+            .catch( (err)=>{
+                console.err(err)
+            } )
+        },
+        // get stores 
+        setNewValueForStore(value){
+
+            // if( this.$route.path.includes('stores') ){
+            //     // console.log( this.$route.fullPath )
+                    
+
+            //     setTimeout(() => {
+            //         location.reload()
+            //     }, 10);
+            // }
+            this.updatedStoreName = value
+            // localStorage.setItem('searchStore', value)
+            this.storeQuery = value;
+
+            this.showListStore = false
+
+        },
     },
+
+    mounted(){
+
+        // hide main search bar that search for categories from stores and ads page 
+        if( this.$route.path == "/stores" || this.$route.path == "/offers" ){
+            this.showStoreAd = false
+        }        
+    },
+    updated(){
+        sessionStorage.setItem('searchStore',this.updatedStoreName)        
+    }
+
 }
 </script>
 

@@ -26,7 +26,7 @@
 
         <!-- google map  -->
         <GoogleMap
-            api-key="AIzaSyA9_ve_oT3ynCaAF8Ji4oBuDjOhWEHE92U"
+            api-key="AIzaSyB4d19CAL7u_hJ8k4P7EaQFcnner_Q9KEo"
             style="width: 100%; height: 500px"
             :center="center"
             :zoom="15"
@@ -42,7 +42,7 @@
             text
             @click="dialog = false"
             >
-            تأكيد
+            {{ $t('common.confirm') }}
             </button>
         </v-card-actions>
         </v-card>

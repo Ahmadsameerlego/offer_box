@@ -1,122 +1,112 @@
 <template>
   <div class="container mt-4">
-    <div class="d-flex align-items-center justify-content-between">
-      <h1 class="fontBold font20">إسم الاعلان</h1>
-      <span class="mainColor2">{{ $t('offers.additionDate') }}  : 30/11/2023 </span>
+    <div class="offer_details_header d-flex align-items-center justify-content-between">
+      <h1 class="fontBold font20"> {{ ad.name }} </h1>
+      <span class="mainColor2">{{ $t('offers.additionDate') }}  : {{ ad.created_at }} </span>
     </div>
-    <div class="d-flex align-items-center justify-content-between">
-      <h2 class="fontBold font15">إسم المتجر</h2>
-      <span class="mainColor2">إلكترونيات</span>
+    <div class="menu_category d-flex align-items-center justify-content-end">
+      <!-- <h2 class="fontBold font15">إسم المتجر</h2> -->
+      <span class="mainColor2"> {{ ad.menu_category }} </span>
     </div>
     <div class="categories">
-      <span class="catrgItem">إلكترونيات</span>
+      <span class="catrgItem" v-for="tag in tags" :key="tag.id" >{{ tag.name }}</span>
     </div>
     <div class="row mb-4">
       <div class="col-lg-6 col-12">
-        <offerDetailesSlider />
+
+        <!-- offer sliders images  -->
+        <offerDetailesSlider v-if="offerDetialsImages" :offerDetialsImages="offerDetialsImages" :adId="adId" :is_favorite="is_favorite" />
+
       </div>
       <div class="col-lg-6 col-12">
         <div class="d-flex flex-column gap20">
           <h3 class="fontBold">{{ $t('offers.AdDescription') }}</h3>
           <p>
-            هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا
-            النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد
-            من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق، إذا
-            كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد
-            الفقرات كما تريد، النص لن يبدو مقسما ولا يحوي أخطاء لغوية، مولد النص
-            العربى مفيد لمصممي المواقع على وجه الخصوص، حيث يحتاج العميل فى كثير
-            من الأحيان أن يطلع على صورة حقيقية لتصميم الموقع، ومن هنا وجب على
-            المصمم أن يضع نصوصا مؤقتة على التصميم ليظهر للعميل الشكل كاملاً،دور
-            مولد النص العربى أن يوفر على المصمم عناء البحث عن نص بديل لا علاقة
-            له بالموضوع الذى يتحدث عنه التصميم فيظهر بشكل لا يليق، هذا النص يمكن
-            أن يتم تركيبه على أي تصميم دون مشكلة فلن يبدو وكأنه نص منسوخ، غير
-            منظم، غير منسق، أو حتى غير مفهوم. لأنه مازال نصاً بديلاً ومؤقتاً.
+            {{ ad.desc }}
           </p>
         </div>
       </div>
     </div>
+
+
+    <!-- similar_ads  -->
     <div class="row mb-4">
       <div class="col-12 mb-3">
         <h5 class="labeledSection fw-bold">{{ $t('offers.Similar') }}</h5>
       </div>
-      <div class="col-lg-4 col-md-6 col-12 mb-3">
+
+      <!-- single ad  -->
+      <div class="col-lg-4 col-md-6 col-12 mb-3" v-for="similar in similar_ads" :key="similar.id">
         <!-- single new offer  -->
-        <router-link :to="'/OfferDescription/' + 1">
+        <router-link :to="'/OfferDescription/'+similar.id">
           <div class="singleNewOffer">
             <!-- offer image  -->
-            <img :src="src" alt="new offer image" class="newOfferImage" />
+            <img :src="similar.image" alt="new offer image" class="newOfferImage" />
 
             <!-- store name -->
             <div class="storeName">
-              <h5>اسم المتجر</h5>
-              <h6>اسم الاعلان</h6>
+              <h5> {{ similar.store_name }} </h5>
+              <h6> {{ similar.name }} </h6>
             </div>
 
             <!-- time -->
-            <span class="offerTime">منذ 1 ساعة</span>
+            <span class="offerTime"> {{ similar.created_at }} </span>
 
             <!-- category  -->
-            <span class="offerCate"> الكترونيات </span>
+            <span class="offerCate"> {{ similar.menu_name }} </span>
           </div>
         </router-link>
       </div>
-      <div class="col-lg-4 col-md-6 col-12 mb-3">
-        <!-- single new offer  -->
-        <router-link :to="'/OfferDescription/' + 1">
-          <div class="singleNewOffer">
-            <!-- offer image  -->
-            <img :src="src" alt="new offer image" class="newOfferImage" />
 
-            <!-- store name -->
-            <div class="storeName">
-              <h5>اسم المتجر</h5>
-              <h6>اسم الاعلان</h6>
-            </div>
 
-            <!-- time -->
-            <span class="offerTime">منذ 1 ساعة</span>
-
-            <!-- category  -->
-            <span class="offerCate"> الكترونيات </span>
-          </div>
-        </router-link>
-      </div>
-      <div class="col-lg-4 col-md-6 col-12 mb-3">
-        <!-- single new offer  -->
-        <router-link :to="'/OfferDescription/' + 1">
-          <div class="singleNewOffer">
-            <!-- offer image  -->
-            <img :src="src" alt="new offer image" class="newOfferImage" />
-
-            <!-- store name -->
-            <div class="storeName">
-              <h5>اسم المتجر</h5>
-              <h6>اسم الاعلان</h6>
-            </div>
-
-            <!-- time -->
-            <span class="offerTime">منذ 1 ساعة</span>
-
-            <!-- category  -->
-            <span class="offerCate"> الكترونيات </span>
-          </div>
-        </router-link>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
+
 import offerDetailesSlider from "@/components/offers/offerDetailesSlider.vue";
+
+import axios from 'axios'
+
 export default {
   data() {
     return {
       src: require("../../assets/slider1.jpg"),
+      ad : {},
+      tags : [],
+      offerDetialsImages : [],
+      is_favorite :false ,
+      similar_ads : [],
+      adId : 0
     };
   },
   components: {
     offerDetailesSlider,
   },
+
+  methods:{
+    async adsDetails(){
+      await axios.get(`single-ad?ad_id=${this.$route.params.id}&mac_address=${localStorage.getItem('macAddress')}`)
+      .then( (res)=>{
+        this.ad = res.data.data.ad
+        this.tags = res.data.data.ad.tags
+        this.offerDetialsImages = res.data.data.ad.images
+        this.is_favorite = res.data.data.ad.is_favorite
+        this.similar_ads = res.data.data.ad.similar_ads
+        this.adId = res.data.data.ad.id
+
+
+
+      } )
+    }
+  },
+  mounted(){
+    this.adsDetails()
+                console.log(this.is_favorite);
+
+  },
+
 };
 </script>
 
@@ -136,5 +126,13 @@ $mainColor2: #807f7f;
     border-radius: 5px;
     box-shadow: 0 0 5px rgb(241, 241, 241);
   }
+}
+.categories .catrgItem{
+  margin-left: 12px;
+}
+@media( max-width:768px ){
+    .menu_category{
+      justify-content: center !important;
+    }
 }
 </style>

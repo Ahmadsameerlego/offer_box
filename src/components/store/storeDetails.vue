@@ -2,17 +2,27 @@
   <section class="storeDetails mt-5 mb-5">
     <!-- logo -->
     <div class="storeImage d-flex justify-content-center align-items-center">
-        <img :src="src" alt="store image">
+        <img :src="store.icon" alt="store image">
     </div>
     <!-- name  -->
-    <h3 class="text-center mt-3">متجر الفريد</h3>
+    <h3 class="text-center mt-3"> {{ store.name }} </h3>
 
     <!-- follow  -->
     <div class="follow_store">
-        <button class="btn  d-flex align-items-center" :class="{ followActive }" @click="followStore()">
+
+
+        <button class="btn  d-flex align-items-center" v-if="store.is_followed==false"   @click="followStore()">
             <i class="fa-regular fa-bell" ></i>
-            <span > {{ $t('store.follow') }} </span>
+            <span> {{ $t('store.follow') }} </span>
         </button>
+
+
+        <button class="btn  d-flex align-items-center followActive"  v-if="store.is_followed==true" @click="followStore()">
+            <i class="fa-regular fa-bell" ></i>
+            <span > {{ $t('store.followed') }} </span>
+        </button>
+
+
     </div>
 
 
@@ -21,8 +31,10 @@
 
         <div class="col-md-6 mb-3">
             <div class="store_box">
-                <h6 class="labeledSection"> {{ $t('store.followed') }} </h6>
-                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque nostrum nihil natus molestias nam tenetur earum modi deleniti pariatur perferendis. </p>
+                <h6 class="labeledSection"> {{ $t('store.desc') }} </h6>
+                <p>
+                    {{ store.bio }}
+                </p>
             </div>
         </div>
 
@@ -31,20 +43,56 @@
                 <h6 class="labeledSection"> {{ $t('store.branches') }} </h6>
 
                 <!-- single branch  -->
-                <div class="single_branch mt-3 mb-3 d-flex justify-content-between align-items-center">
+                <div class="single_branch mt-3 mb-3 d-flex justify-content-between align-items-center" v-for="branch in branches" :key="branch.id">
 
                     <div class="d-flex align-items-center">
 
-                        <img :src="flag" alt="" class="flagImage">
+                        <img :src="branch.icon" alt="" class="flagImage">
                         <div>
-                            <h6>الرياض</h6>
-                            <span class="text-muted">شارع الصندزق الاسود</span>
+                            <h6 v-text="branch.address"></h6>
+                            <!-- <span class="text-muted">شارع الصندزق الاسود</span> -->
                         </div>
                     </div>
 
-                    <div>
-                        <img :src="loca" alt="" class="locationImage">
+                    <button
+                        class="btn p-0"
+                        type="button"  data-bs-toggle="modal" :data-bs-target="'#exampleModal'+branch.id"
+                    >
+                            <img :src="loca" alt="" class="locationImage">
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" :id="'exampleModal'+branch.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="min-width:80%">
+                        <div class="modal-content">
+                        
+                        <div class="modal-body">
+
+                            <div class="d-flex justify-content-end mb-3 mt-3">
+                                <button class="btn btn-danger" data-bs-dismiss="modal"> 
+                                    <i class="fa-solid fa-x"></i>
+                                </button>
+                            </div>
+
+                            <!-- google map  -->
+                            <GoogleMap
+                                api-key="AIzaSyB4d19CAL7u_hJ8k4P7EaQFcnner_Q9KEo"
+                                style="width: 100%; height: 500px"
+                                :center="center"
+                                :zoom="15"
+                            >
+                                <Marker
+                                    :options="markerOptions"
+                                />
+                            </GoogleMap>
+                        </div>
+
+                        
+                        </div>
                     </div>
+                    </div>
+
+
 
                 </div>
 
@@ -56,9 +104,13 @@
                 <h6 class="labeledSection">  {{ $t('store.storeLinks') }} </h6>
 
                 <div class="storeLinks mt-3 mb-3 d-flex justify-content-between">
-                    <p>موقع المتجر</p>
-
-                    <a href="aait">aait</a>
+                    <div class="site_social_media d-flex justify-content-around mt-3 mb-3">
+                        <div v-for="soical in socials" :key="soical.id">
+                            <a :href="soical.link">
+                                <img :src="soical.image" :alt="soical.name">
+                            </a>
+                        </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -69,22 +121,10 @@
 
                 <div class="contact_sites d-flex align-items-center mt-3">
                     <img :src="phone" alt="">
-                    <a href="tel:01013746111"> {{ $t('store.phone') }} : 01013746111 </a>
+                    <a :href="'tel:'+store.phone"> {{ $t('store.phone') }} : {{ store.phone }} </a>
                 </div>
 
-                <div class="site_social_media d-flex justify-content-around mt-3 mb-3">
-                    <a href="#">
-                        <img :src="face" alt="social conatct">
-                    </a>
-
-                    <a href="#">
-                        <img :src="face" alt="social conatct">
-                    </a>
-
-                    <a href="#">
-                        <img :src="face" alt="social conatct">
-                    </a>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -95,12 +135,12 @@
 
         <div class="row mt-5">
 
-            <div class="col-md-6" v-for="cat in cats" :key="cat.id">
+            <div class="col-md-6 mb-3" v-for="cat in cats" :key="cat.id">
                 <div class="single_part">
-                    <router-link :to="'/storeCategories/'+cat.id">
-                        <img :src="cat.catImage" alt="">
+                    <router-link :to="'/storeCategories/'+cat.id" @click="sendStoreId()">
+                        <img :src="cat.image" alt="">
 
-                        <h5 class=""> {{ cat.catTitle }} </h5>
+                        <h5 class=""> {{ cat.name }} </h5>
                     </router-link>
                 </div>
             </div>
@@ -111,6 +151,10 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+import { GoogleMap, Marker } from 'vue3-google-map';
+
 export default {
     data(){
         return{
@@ -122,25 +166,77 @@ export default {
             src1 : require('../../assets/slider1.jpg'),
             followActive : false,
 
-            cats : [
-                {
-                    id:1, 
-                    catImage :  require('../../assets/slider1.jpg'),
-                    catTitle : ' هواتف'
-                },
-                {
-                    id:2, 
-                    catImage :  require('../../assets/slider1.jpg'),
-                    catTitle : ' هواتف'
-                },
-            ]
+            // store object 
+            store : {},
+            // socail array 
+            socials : [],
+            cats : [],
+            branches : [],
+
+            dialog:false,
+            center: { lat: 45.508, lng: -73.587 },
+            markerOptions : { }
+
         }
     },
     methods:{
-        followStore(){
-            this.followActive = true
+        async followStore(){
+            // this.followActive = true
+
+            await axios.post(`follow-store`,{
+                store_id : this.$route.params.id
+            })
+            .then( (res)=>{
+                if( res.data.code == 200 && res.data.key == 'success' ){
+                    this.followActive = res.data.data.is_followed;
+                    location.reload()
+                }
+            } )
+        },
+
+
+        // get store details 
+        async getStoreDetails(){
+            await axios.get(`single-store?lat=${localStorage.getItem('lat')}&long=${localStorage.getItem('lng')}&store_id=${this.$route.params.id}`)
+            .then( (res)=>{
+                this.store = res.data.data.store
+                this.socials = res.data.data.store.socials
+                this.cats = res.data.data.store.menu_categories
+                this.branches = res.data.data.store.branches
+
+                        
+                for( let i = 0 ; i < this.branches.length ; i++ ){
+                    this.center.lat = parseFloat(this.branches[i].lat)
+                    this.center.lng = parseFloat(this.branches[i].long)
+
+                    console.log(this.center.lat)
+                    console.log(this.center.lng)
+                    // console.log(this.center.lng)
+                }
+            } )
+        },
+        sendStoreId(){
+            localStorage.setItem('store_id', this.$route.params.id)
         }
-    }
+
+    },
+    mounted(){
+        this.getStoreDetails()
+
+        this.markerOptions = {position: this.center, label: 'L', title: 'LADY LIBERTY' }
+
+    },
+    components:{
+        GoogleMap, Marker
+    },
+    // setup() {
+    //   const center = []
+    //   const markerOptions = { position: center, label: 'L', title: 'LADY LIBERTY' }
+    //   console.log(center)
+    //   return { center, markerOptions }
+
+      
+    // },
 }
 </script>
  
@@ -230,5 +326,11 @@ export default {
                 top: 50%;
             }
         }
+    }
+
+    .site_social_media img{
+        width:30px;
+        height:30px;
+        border-radius: 50%;
     }
 </style>

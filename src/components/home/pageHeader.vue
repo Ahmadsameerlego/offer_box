@@ -70,7 +70,7 @@
                   <!-- alerts  -->
                   <router-link to="/NotificationPage" class="alert_Icon" @click="loginAlert()">
                     <i class="fa-solid fa-bell"></i>
-                    <span class="alert_cont" v-if="user"> {{ noti_count }} </span>
+                    <span class="alert_cont" v-if="user"> {{ cloudNoti }} </span>
                     <span class="alert_cont" v-else> 0</span>
                   </router-link>
 
@@ -141,6 +141,7 @@ export default {
         user : {},
         username : '',
         noti_count  : null,
+        cloudNoti : null ,
         loginSwitch : ''
     }
     },
@@ -190,7 +191,9 @@ export default {
             this.$swal({
               icon: 'success',
               title: res.data.msg,
-              timer : 2000
+              timer : 2000,
+              showConfirmButton: false,
+
             });
               localStorage.removeItem('user');
 
@@ -204,7 +207,8 @@ export default {
             this.$swal({
               icon: 'error',
               title: res.data.msg,
-              timer : 2000
+              timer : 2000,
+              showConfirmButton: false,
             });
           }
         } )
@@ -221,6 +225,8 @@ export default {
         )
         .then( (res)=>{
           this.noti_count = res.data.data.num_not_seen_notifications
+
+          localStorage.setItem('noticount', this.noti_count)
         } )
         .catch( (err)=>{
           console.log(err)
@@ -258,8 +264,14 @@ export default {
       this.user = localStorage.getItem('user');
       if(this.user){
         this.username = JSON.parse(localStorage.getItem('user')).name.split(' ')[0]
+
+        
       }else{
         return null
+      }
+
+      if( localStorage.getItem('updatedUserName') && localStorage.getItem('isUserNameUpdated')=="true" ){
+          this.username = localStorage.getItem('updatedUserName')
       }
 
       console.log(this.username)
@@ -267,10 +279,13 @@ export default {
     props:{
       sliders : Array
     },
+    beforeMount(){
+            this.getNotUnSee();
 
+    },
     mounted(){
-      this.getClientInfo(),
-      this.getNotUnSee()
+      this.getClientInfo();
+      this.cloudNoti = localStorage.getItem('noticount')
     },
     
 
@@ -394,7 +409,7 @@ header{
         
       }
   }
-  #search{
+  .searchBar{
     position: relative;
     width: 68%;
     margin: auto;

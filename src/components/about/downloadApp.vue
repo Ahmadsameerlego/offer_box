@@ -7,21 +7,21 @@
                 <div class="col-md-6">
                     <div>
                         <h1 class="fw-bold mb-3">
-                            يمكنك تحميل التطبيق ومتابعة احدث الاعلانات من خلال جوالك
+                            {{ $t('common.downloadApp') }}
                         </h1>
-
+<!-- 
                         <p class="text-muted">
                             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus porro nesciunt deleniti. Culpa velit voluptates, neque incidunt aspernatur deserunt. Reprehenderit officiis veniam, ea porro possimus rem non ratione temporibus fugiat.
-                        </p>
+                        </p> -->
                     </div>
 
                         <div class="downloadApp mt-3">
                             <div class="d-flex">
-                                <a href="#">
+                                <a :href="ios">
                                     <img :src="appStore" alt="">
                                 </a>
 
-                                <a href="#">
+                                <a :href="android">
                                     <img :src="googlePlay" alt="">
                                 </a>
                             </div>
@@ -39,15 +39,32 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data(){
         return{
             googlePlay : require('../../assets/googlePlay.png'),
             appStore : require('../../assets/appStore.png'),
-            phoneImage : require('../../assets/Body.png')
+            phoneImage : require('../../assets/Body.png'),
 
+            ios : '',
+            android : ''
         }
     },
+
+    methods:{
+        async getStatistics(){
+            await axios.get('web-info')
+            .then( (res)=>{
+
+                this.android = res.data.data.android_link
+                this.ios = res.data.data.ios_link
+            } )
+        },
+    },
+    mounted(){
+        this.getStatistics()
+    }
 }
 </script>
 

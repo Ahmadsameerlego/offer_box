@@ -32,7 +32,7 @@
               src="../../assets/noun_mobile.png"
             ></v-img>
           </span>
-          <v-select :items="items" solo v-model="calling_code" name="calling_code"></v-select>
+          <v-select :items="items" solo v-model="country_key" name="country_key"></v-select>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ export default {
   data: () => ({
     items: [],
     phone: "",
-    calling_code: null,
+    country_key: null,
     disabled : false
   }),
   methods:{
@@ -64,6 +64,8 @@ export default {
           this.$swal({
               icon: 'success',
               title: response.data.msg,
+              timer : 2000,
+              showConfirmButton: false,
           });
           localStorage.setItem('phone', this.phone)
           this.$router.push('/confirmCode')
@@ -71,6 +73,8 @@ export default {
           this.$swal({
               icon: 'error',
               title: response.data.msg,
+              timer : 2000,
+              showConfirmButton: false,
           });
         }
         this.disabled = false

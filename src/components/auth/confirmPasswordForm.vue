@@ -11,7 +11,7 @@
 
         <h2 class="fontBold">{{ $t("auth.wellcome") }}</h2>
 
-        <p class="fontBold">{{ $t("auth.dataLogin") }}</p>
+        <p class="fontBold">{{ $t("auth.dataChangePass") }}</p>
       </div>
       <div class="mt-3 mb-3">
         <h6 class="fontBold mb-0">{{ $t("auth.password") }}</h6>
@@ -115,10 +115,10 @@ export default {
     showPassword() {
       this.typePass = this.typePass === "password" ? "text" : "password";
     },
-    // confrmPassword() {
-    //   this.typePassConfrm =
-    //     this.typePassConfrm === "password" ? "text" : "password";
-    // },
+    confrmPassword() {
+      this.typePassConfrm =
+        this.typePassConfrm === "password" ? "text" : "password";
+    },
 
     async submitForm() {
       this.disabled = true
@@ -131,12 +131,18 @@ export default {
             this.$swal({
                 icon: 'success',
                 title: response.data.msg,
+                timer:2000,
+              showConfirmButton: false,
             });
+
+            this.$router.push('/HomeLogin')
 
           }else{
             this.$swal({
                 icon: 'error',
                 title: response.data.msg,
+                timer:2000,
+              showConfirmButton: false,
             });
           }
 

@@ -87,7 +87,7 @@ export default {
         if(response.status == 200 && response.data.key == "success"){
           this.$swal({
               icon: 'success',
-              title: response.data.msg,
+              title: this.$t('common.activeAcc'),
               timer:2000,
               showConfirmButton: false,
           });

@@ -1,6 +1,10 @@
 <template>
+    <!-- loader  -->
+    <loader v-if="loader" />
+
   <div class="container">
-    <ul class="notifyList" v-if="notes.length>0">
+    <section v-if="notes.length>0">
+        <ul class="notifyList" >
         <li v-for="not in notes" :key="not.id">
             <div  class="alert_Icon">
                 <div class="d-flex align-items-center gap15">
@@ -13,6 +17,21 @@
             </div>
         </li>
     </ul>
+    <paginate
+                v-model="currentPageP"
+                :page-count="totalPagesP"
+                :click-handler="page => pageClickHandler(page)"
+                :prev-text="'Prev'"
+                :next-text="'Next'"
+                :container-class="'pagination'"
+                :page-class="'page-item'"    
+                :no-li-surround="true"   
+                v-if="notes.length>0"        
+            >
+    </paginate>
+    </section>
+
+    
    <section v-else>
     <v-alert
       type="info"
@@ -27,25 +46,58 @@
 
 <script>
 // import { inject } from 'vue'
+  import Paginate from 'vuejs-paginate-next';
+import axios from 'axios'
+import loader from '../share/pageLoader.vue'
 
 export default {
     props : {
-        notes : Array,
-        pagination : Object
+
     },
     data(){
-        // return{
-        //       inject: ['messaging'],
-        // }
+        return{
+            currentPageP: 1,
+            perPageP: 10,
+            totalPagesP: 0,
+            notes : [],
+            loader : true
+        }
     },
-    mounted () {
-        // console.log('Firebase cloud messaging object', this.$messaging)
+    components:{
+        Paginate,
+                loader
 
+    },
+    methods:{
+         async getNotification(){
+            await axios.get(`notifications?page=${this.currentPageP}`, {
+                headers : {
+                    Authorization:  `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then( (res)=>{
+                this.notes = res.data.data.notifications
+                this.totalPagesP = res.data.data.pagination.total_pages
+                this.perPageP = res.data.data.pagination.per_page
+                this.currentPageP = res.data.data.pagination.current_page
 
-
-
+                this.loader = false
+            } )
+            .catch( (err)=>{
+                console.error(err)
+            } )
+        },
+        pageClickHandler(page) {
+            this.currentPageP = page
+            this.getNotification()
+        },
+    },
+    created() {
+        this.totalPagesP = Math.ceil(this.notes.length / this.perPageP)
+    },
+    mounted(){
+        this.getNotification()
     }
-
 };
 </script>
 
